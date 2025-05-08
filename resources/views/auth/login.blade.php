@@ -4,9 +4,15 @@
 
     <form method="POST" action="{{ route('login') }}">
         @csrf
-
+           {{-- <!-- Name -->
+           <div>
+            <x-input-label for="name" :value="__('Name')" />
+            <x-text-input id="name" class="block mt-1 w-full" type="name" name="name" :value="old('name')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        </div>
+         --}}
         <!-- Email Address -->
-        <div>
+        <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
@@ -23,6 +29,13 @@
 
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
+
+           {{-- <!-- Contact -->
+           <div class="mt-4">
+            <x-input-label for="contact" :value="__('Contact')" />
+            <x-text-input id="contact" class="block mt-1 w-full" type="contact" name="contact" :value="old('contact')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('contact')" class="mt-2" />
+        </div> --}}
 
         <!-- Remember Me -->
         <div class="block mt-4">
