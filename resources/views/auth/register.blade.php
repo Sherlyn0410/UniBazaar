@@ -1,4 +1,9 @@
 <x-guest-layout>
+    <div>
+        <img src="assets/img/inti-logo.png" alt="inti-logo">
+        <p class="text-xl font-bold text-center py-4">Create an account</p>
+    </div>
+
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
@@ -29,7 +34,7 @@
         </div>
 
          <!-- Contact -->
-         <div>
+         <div class="mt-4">
             <x-input-label for="contact" :value="__('Contact')" />
             <x-text-input id="contact" class="block mt-1 w-full" type="text" name="contact" :value="old('contact')" required autofocus autocomplete="contact" />
             <x-input-error :messages="$errors->get('contact')" class="mt-2" />
@@ -47,13 +52,14 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+        <div class="flex items-center justify-end mt-4 py-8">
+            <span class="text-sm text-gray-600">Already have an account?</span>
+            <a class="ms-1 underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                {{ __('Log In') }}
             </a>
 
             <x-primary-button class="ms-4">
-                {{ __('Register') }}
+                {{ __('Create account') }}
             </x-primary-button>
         </div>
     </form>
