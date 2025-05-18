@@ -31,6 +31,6 @@ class SellerController extends Controller
         }
         //store to db
         $newproduct = Product::create($data);
-        return redirect(route('/'));
+        return redirect(route('main'));
     }
 }
