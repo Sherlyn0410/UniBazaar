@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Product;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\SellerController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [MainController::class, 'viewMain'])->name('/');
+
+Route::get('product-upload', [SellerController::class, 'createProducts'])->name('products.upload');
+Route::post('/',[SellerController::class,'storeProducts'])->name('products.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
