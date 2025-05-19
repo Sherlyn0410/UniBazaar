@@ -14,5 +14,12 @@ class Product extends Model
         'product_price',
         'product_details',
         'product_image',
+        'student_id',
         ];
+        
+ public function student()
+{
+    return $this->belongsTo(Student::class);
+}
+
 }

@@ -16,4 +16,10 @@ class Student extends Authenticatable
         'password',
         'contact',
     ];
+
+    public function products()
+{
+    return $this->hasMany(Product::class);
+}
+
 }

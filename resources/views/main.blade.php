@@ -40,6 +40,8 @@
                                 <h5 class="card-title">{{ $product->product_name }}</h5>
                                 <p class="card-text">{{ $product->product_details }}</p>
                                 <p class="card-text"><strong>Price: </strong>RM{{ $product->product_price }}</p>
+                                <p>Sold by: {{ $product->student->name }}</p>
+
                             </div>
                         </div>
                     </div>
