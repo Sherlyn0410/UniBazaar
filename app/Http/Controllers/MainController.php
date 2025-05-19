@@ -13,4 +13,10 @@ class MainController extends Controller
         return view('main', compact('products'));
     }
 
+    public function viewMarketplace()
+    {
+        $products = Product::all(); // Get all products from the database or any other source
+        return view('marketplace', compact('products'));
+    }
+
 }

@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [MainController::class, 'viewMain'])->name('main');
+Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
+
 
 Route::get('product-upload', [SellerController::class, 'createProducts'])->name('products.upload');
 Route::post('/',[SellerController::class,'storeProducts'])->name('products.store');
@@ -27,9 +29,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/marketplace', function (){
-    return view('marketplace');
-})->middleware(['auth', 'verified'])->name('marketplace');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
