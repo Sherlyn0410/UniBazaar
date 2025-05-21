@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
 </head>
-<body>
+<x-app-layout>
 
-</body>
+</x-app-layout>
 </html>

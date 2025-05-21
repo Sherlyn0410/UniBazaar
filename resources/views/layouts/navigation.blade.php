@@ -30,9 +30,10 @@
 
             <!-- Shopping Cart and Message Icons -->
             <div class="d-flex align-items-center">
-                <a class="me-4 text-decoration-none text-secondary">
-                    <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
-                </a>
+                <a href="{{ route('cart.index') }}" class="me-4 text-decoration-none text-secondary">
+    <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+</a>
+
                 <a class="me-5 text-decoration-none text-secondary">
                     <i class="bi bi-envelope" style="font-size: 1.5rem;"></i>
                 </a>
@@ -40,7 +41,7 @@
                 <!-- Settings Dropdown -->
                 <div class="dropdown">
                     <button class="btn dropdown-toggle p-0 bg-transparent border-0 shadow-none" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ Auth::user()->name }}
+                        <!-- {{ Auth::user()->name }} -->
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>
