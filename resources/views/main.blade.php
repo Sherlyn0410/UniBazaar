@@ -37,7 +37,7 @@
             <div class="overflow-auto">
                 <div class="d-flex flex-row">
                     @foreach ($products->shuffle() as $product)
-                        <div class="me-3">
+                        <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark me-3">
                             <div style="width: 200px;">
                                 <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px;" />
                                 <div class="card-body">
@@ -49,11 +49,12 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
         </div>
+
         <div class="container pb-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="text-left">Recently Added Items</h3>
@@ -62,7 +63,7 @@
             <div class="overflow-auto">
                 <div class="d-flex flex-row">
                     @foreach ($products as $product)
-                        <div class="me-3">
+                        <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark me-3">
                             <div style="width: 200px;">
                                 <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px;" />
                                 <div class="card-body">
@@ -74,11 +75,12 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
+        </div>
     </div>
-    
+
 </x-app-layout>
 </html>

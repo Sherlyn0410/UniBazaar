@@ -19,4 +19,9 @@ class MainController extends Controller
         return view('marketplace', compact('products'));
     }
 
+    public function viewProductDetails($id)
+    {
+        $product = Product::with('student')->findOrFail($id); // Load the product and related student info
+        return view('product-details', compact('product'));
+    }
 }

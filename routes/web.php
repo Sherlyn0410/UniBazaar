@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [MainController::class, 'viewMain'])->name('main');
 Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
+Route::get('/product/{id}', [MainController::class, 'viewProductDetails'])->name('product.show');
 
 
 Route::get('product-upload', [SellerController::class, 'createProducts'])->name('products.upload');
