@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Product;
+use App\Http\Controllers\Product;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SellerController;
@@ -23,9 +23,8 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
 Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
 Route::get('/product/{id}', [MainController::class, 'viewProductDetails'])->name('product.show');
 
-
 Route::get('product-upload', [SellerController::class, 'createProducts'])->name('products.upload');
-Route::post('/',[SellerController::class,'storeProducts'])->name('products.store');
+Route::post('product-upload', [SellerController::class, 'storeProducts'])->name('products.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -38,5 +37,5 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
-
 require __DIR__.'/auth.php';
+
