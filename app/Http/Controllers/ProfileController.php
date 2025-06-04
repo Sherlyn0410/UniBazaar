@@ -12,19 +12,19 @@ class ProfileController extends Controller
         return view('profile');
     }
 
-    public function update(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-        ]);
+    // public function update(Request $request)
+    // {
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|email|max:255',
+    //     ]);
 
-        $user = Auth::user();
-        $user->update([
-            'name'  => $request->name,
-            'email' => $request->email,
-        ]);
+    //     $user = Auth::user();
+    //     $user->update([
+    //         'name'  => $request->name,
+    //         'email' => $request->email,
+    //     ]);
 
-        return redirect()->route('profile.edit')->with('status', 'Profile updated!');
-    }
+    //     return redirect()->route('profile.edit')->with('status', 'Profile updated!');
+    // }
 }
