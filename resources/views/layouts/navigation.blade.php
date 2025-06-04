@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow">
     <div class="container justify-content-between">
         <!-- Logo -->
         <a class="navbar-brand" href="{{ route('main') }}">
@@ -41,7 +41,7 @@
                 <!-- Settings Dropdown -->
                 <div class="dropdown">
                     <button class="btn dropdown-toggle p-0 bg-transparent border-0 shadow-none" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        <!-- {{ Auth::user()->name }} -->
+                        {{ Auth::user()->name }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>

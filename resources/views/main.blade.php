@@ -30,24 +30,54 @@
     </div>
     <div class="bg-white">
         <div class="container py-4">
-            <h3 class="text-left mb-4">From Your Campus Mates</h3>
-            <div class="row">
-                @foreach ($products as $product)
-                    <div class="col-md-4 mb-3">
-                        <div class="card">
-                            <img src="{{ asset($product->product_image) }}" class="card-img-top" alt="{{ $product->product_name }}" />
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $product->product_name }}</h5>
-                                <p class="card-text">{{ $product->product_details }}</p>
-                                <p class="card-text"><strong>Price: </strong>RM{{ $product->product_price }}</p>
-                                <p>Sold by: {{ $product->student->name }}</p>
-
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-left">From Your Campus Mates</h3>
+                <a href="{{ route('marketplace') }}" class="link-secondary link-underline-opacity-0">Show All<i class="bi bi-chevron-right ms-1"></i></a>
+            </div>
+            <div class="overflow-auto">
+                <div class="d-flex flex-row">
+                    @foreach ($products->shuffle() as $product)
+                        <div class="me-3">
+                            <div style="width: 200px;">
+                                <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px;" />
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
+                                    <h6 class="card-text">RM{{ $product->product_price }}</h6>
+                                    <p class="text-truncate">
+                                        <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
+                                        {{ $product->student->name }}
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
+        <div class="container pb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3 class="text-left">Recently Added Items</h3>
+                <a href="{{ route('marketplace') }}" class="link-secondary link-underline-opacity-0">Show All<i class="bi bi-chevron-right ms-1"></i></a>
+            </div>
+            <div class="overflow-auto">
+                <div class="d-flex flex-row">
+                    @foreach ($products as $product)
+                        <div class="me-3">
+                            <div style="width: 200px;">
+                                <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px;" />
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
+                                    <h6 class="card-text">RM{{ $product->product_price }}</h6>
+                                    <p class="text-truncate">
+                                        <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
+                                        {{ $product->student->name }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
     </div>
     
 </x-app-layout>
