@@ -35,22 +35,22 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <h5>Profile Information</h5>
                             <button type="submit" class="btn btn-danger btn-sm">
-                                <i class="bi bi-pencil"></i> Save Changes
+                                <i class="bi bi-pencil"></i> Edit
                             </button>
                         </div>
 
                         <div class="row mt-3">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Name</label>
-                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}">
+                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" readonly>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Email Address</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}">
+                                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" readonly>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Phone No.</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->phone) }}">
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->phone) }}" readonly>
                             </div>
                         </div>
                     </div>

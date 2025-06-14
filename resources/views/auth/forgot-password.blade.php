@@ -1,6 +1,16 @@
 <x-guest-layout>
+    <div>
+        <img src="assets/img/inti-logo.png" alt="inti-logo">
+        <div class="flex items-center mb-2">
+            <a href="{{ route('login') }}" class="flex items-center text-gray-700 hover:text-gray-900">
+                <span class="material-icons">arrow_back</span>
+            </a>
+            <p class="text-xl font-bold text-center flex-1 py-4">Forgot Password</p>
+        </div>
+    </div>
+
     <div class="mb-4 text-sm text-gray-600">
-        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+        {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link.') }}
     </div>
 
     <!-- Session Status -->
@@ -18,7 +28,7 @@
 
         <div class="flex items-center justify-end mt-4">
             <x-primary-button>
-                {{ __('Email Password Reset Link') }}
+                {{ __('Password Reset Link') }}
             </x-primary-button>
         </div>
     </form>
