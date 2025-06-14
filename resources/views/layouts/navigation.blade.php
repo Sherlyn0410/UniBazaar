@@ -21,6 +21,9 @@
                     </form>
                 </li>
                 <li class="nav-item me-2">
+                    <a class="nav-link {{ request()->routeIs('main') ? 'active' : '' }}" href="{{ route('main') }}">{{ __('Home') }}</a>
+                </li>
+                <li class="nav-item me-2">
                     <a class="nav-link {{ request()->routeIs('marketplace') ? 'active' : '' }}" href="{{ route('marketplace') }}">{{ __('Marketplace') }}</a>
                 </li>
                 <li class="nav-item">
@@ -31,8 +34,8 @@
             <!-- Shopping Cart and Message Icons -->
             <div class="d-flex align-items-center">
                 <a href="{{ route('cart.index') }}" class="me-4 text-decoration-none text-secondary">
-    <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
-</a>
+                     <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+                </a>
 
                 <a class="me-5 text-decoration-none text-secondary">
                     <i class="bi bi-envelope" style="font-size: 1.5rem;"></i>
