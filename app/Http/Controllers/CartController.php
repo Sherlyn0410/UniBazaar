@@ -58,7 +58,7 @@ public function removeFromCart($id)
 
     $cartItem->delete();
 
-    return redirect()->route('cart.view')->with('success', 'Item removed from cart.');
+    return redirect()->route('cart.index')->with('success', 'Item removed from cart.');
 }
 }
 

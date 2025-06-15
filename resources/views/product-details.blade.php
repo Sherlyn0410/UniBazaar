@@ -26,29 +26,33 @@
                         <h5 class="fw-semibold mb-2">Description</h5>
                         <p class="text-secondary">{{ $product->product_details }}</p>
                     </div>
-                <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-center gap-3 flex-wrap">
-                    @csrf
-
-                            {{-- Hidden product_id --}}
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-
-                            {{-- Quantity input --}}
-                            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 100px;">
-
-                            {{-- Add to Cart Button (submit) --}}
+                    @php
+                        $inCart = \App\Models\Cart::where('student_id', Auth::id())
+                            ->where('product_id', $product->id)
+                            ->exists();
+                    @endphp
+                    <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-center gap-3 flex-wrap">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity" value="1">
+                        @if($inCart)
+                            <x-red-outline-button type="button" onclick="window.location='{{ route('cart.index') }}'">
+                                <i class="bi bi-cart-check me-2"></i>
+                                {{ __('Added to Cart') }}
+                            </x-red-outline-button>
+                        @else
                             <x-red-outline-button type="submit">
                                 <i class="bi bi-cart-plus me-2"></i>
                                 {{ __('Add to Cart') }}
                             </x-red-outline-button>
+                        @endif
 
-                            {{-- Buy Now Button --}}
-                            <x-red-button type="button">
-                                <i class="bi bi-bag-check me-2"></i>
-                                {{ __('Buy Now') }}
-                            </x-red-button>
-                </form>
+                        <x-red-button type="button">
+                            <i class="bi bi-bag-check me-2"></i>
+                            {{ __('Buy Now') }}
+                        </x-red-button>
+                    </form>
                 </div>
-
             </div>
         </div>
     </div>

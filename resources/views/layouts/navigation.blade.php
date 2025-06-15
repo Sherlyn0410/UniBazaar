@@ -1,3 +1,10 @@
+@php
+    $cartCount = 0;
+    if(Auth::check()) {
+        $cartCount = \App\Models\Cart::where('student_id', Auth::id())->count();
+    }
+@endphp
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top shadow">
     <div class="container justify-content-between">
         <!-- Logo -->
@@ -32,9 +39,14 @@
             </ul>
 
             <!-- Shopping Cart and Message Icons -->
-            <div class="d-flex align-items-center">
-                <a href="{{ route('cart.index') }}" class="me-4 text-decoration-none text-secondary">
-                     <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+            <div class="d-flex align-items-center position-relative">
+                <a href="{{ route('cart.index') }}" class="me-4 text-decoration-none text-secondary position-relative">
+                    <i class="bi bi-cart" style="font-size: 1.5rem;"></i>
+                    @if($cartCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.75rem;">
+                            {{ $cartCount }}
+                        </span>
+                    @endif
                 </a>
 
                 <a class="me-5 text-decoration-none text-secondary">
