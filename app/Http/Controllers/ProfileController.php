@@ -39,7 +39,7 @@ class ProfileController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->phone = $request->phone;
-        $user->save();
+        // $user->save();
 
         return redirect()->route('profile.edit')->with('status', 'Profile updated successfully!');
     }

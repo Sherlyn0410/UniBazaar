@@ -1,6 +1,6 @@
 <x-app-layout>
     <div class="container-fluid" style="min-height: 100vh;">
-        <div class="container py-4">  
+        <div class="container py-4">
             <div class="row justify-content-center">
                 <div class="col-lg-4 d-flex justify-content-center mb-4 mb-lg-0">
                     <a href="{{ route('marketplace') }}" class="fs-4 text-dark me-4">
@@ -22,24 +22,35 @@
                         <hr>
                         <h3 class="fw-semibold mb-2">{{ $product->product_name }}</h3>
                         <h4 class="fw-medium mb-2">RM{{ $product->product_price }}</h4>
-                        
+
                         <h5 class="fw-semibold mb-2">Description</h5>
                         <p class="text-secondary">{{ $product->product_details }}</p>
                     </div>
-                    <form method="POST" class="ms-4 d-flex align-items-center gap-3 flex-wrap">
-                        @csrf
-                        <x-red-outline-button>
-                            <i class="bi bi-cart-plus me-2"></i>
-                            {{ __('Add to Cart') }}
-                        </x-red-outline-button>
-                        <x-red-button type="button">
-                            <i class="bi bi-bag-check me-2"></i> 
-                            {{ __('Buy Now') }}
-                        </x-red-button>
-                    </form>
+                <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-center gap-3 flex-wrap">
+                    @csrf
+
+                            {{-- Hidden product_id --}}
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                            {{-- Quantity input --}}
+                            <input type="number" name="quantity" value="1" min="1" class="form-control" style="width: 100px;">
+
+                            {{-- Add to Cart Button (submit) --}}
+                            <x-red-outline-button type="submit">
+                                <i class="bi bi-cart-plus me-2"></i>
+                                {{ __('Add to Cart') }}
+                            </x-red-outline-button>
+
+                            {{-- Buy Now Button --}}
+                            <x-red-button type="button">
+                                <i class="bi bi-bag-check me-2"></i>
+                                {{ __('Buy Now') }}
+                            </x-red-button>
+                </form>
                 </div>
-                
+
             </div>
         </div>
     </div>
 </x-app-layout>
+
