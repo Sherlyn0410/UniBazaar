@@ -49,7 +49,7 @@
                     @endif
                 </a>
 
-                <a class="me-5 text-decoration-none text-secondary">
+                <a href="{{ route('chat') }}" class="me-5 text-decoration-none text-secondary">
                     <i class="bi bi-envelope" style="font-size: 1.5rem;"></i>
                 </a>
 

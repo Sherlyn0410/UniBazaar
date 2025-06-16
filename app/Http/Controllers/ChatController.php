@@ -6,7 +6,7 @@ use App\Models\User;
 
 class ChatController extends Controller
 {
-    public function show()
+    public function showChat()
     {
         return view('chat');
     }
