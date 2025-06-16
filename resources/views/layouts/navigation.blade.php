@@ -59,7 +59,7 @@
                         {{-- {{ Auth::user()->name }} --}}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a></li>
+                        <li><a class="dropdown-item" href="{{ route('profile') }}">{{ __('Profile') }}</a></li>
                         <li>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf

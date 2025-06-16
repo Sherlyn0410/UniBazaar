@@ -41,6 +41,6 @@ class ProfileController extends Controller
         $user->phone = $request->phone;
         // $user->save();
 
-        return redirect()->route('profile.edit')->with('status', 'Profile updated successfully!');
+        return redirect()->route('profile')->with('status', 'Profile updated successfully!');
     }
 }

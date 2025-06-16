@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\BuyNowController;
+use App\Http\Controllers\ChatController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
+Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
 
 Route::get('/', [MainController::class, 'viewMain'])->name('main');
 Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
@@ -35,8 +41,15 @@ Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.index');
 Route::delete('/cart/{id}/remove', [CartController::class, 'removeFromCart'])->name('cart.remove')->middleware('auth');
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/buy-now/{product}', [BuyNowController::class, 'show'])->name('buy.now');
+    Route::post('/buy-now/place-order', [BuyNowController::class, 'placeOrder'])->name('buy.now.place');
+
+    Route::get('/chat/{sellerId}', [ChatController::class, 'show'])->name('chat');
 });
 
 require __DIR__.'/auth.php';

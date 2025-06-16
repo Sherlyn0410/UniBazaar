@@ -15,9 +15,9 @@
                                 <div class="fw-semibold fs-5">{{ $product->student->name }}</div>
                                 <div class="text-warning fs-6">4.7 <i class="bi bi-star-fill ms-1 me-2"></i>(56 Reviews)</div>
                             </div>
-                            <button class="btn btn-outline-secondary">
-                                <i class="bi bi-chat-dots me-2"></i> Chat
-                            </button>
+                            <a href="{{ route('chat', $product->student_id) }}" class="btn btn-outline-secondary">
+    <i class="bi bi-chat-dots me-2"></i> Chat
+</a>
                         </div>
                         <hr>
                         <h3 class="fw-semibold mb-2">{{ $product->product_name }}</h3>
@@ -46,11 +46,9 @@
                                 {{ __('Add to Cart') }}
                             </x-red-outline-button>
                         @endif
-
-                        <x-red-button type="button">
-                            <i class="bi bi-bag-check me-2"></i>
-                            {{ __('Buy Now') }}
-                        </x-red-button>
+                        <x-red-button type="button" onclick="window.location='{{ route('buy.now', $product->id) }}'">
+    <i class="bi bi-bag-check me-2"></i> Buy Now
+</x-red-button>
                     </form>
                 </div>
             </div>
