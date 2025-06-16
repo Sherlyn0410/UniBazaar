@@ -49,7 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/buy-now/{product}', [BuyNowController::class, 'show'])->name('buy.now');
     Route::post('/buy-now/place-order', [BuyNowController::class, 'placeOrder'])->name('buy.now.place');
 
-    Route::get('/chat/{sellerId}', [ChatController::class, 'show'])->name('chat');
+    Route::get('/chat', [ChatController::class, 'showChat'])->name('chat');
 });
 
 require __DIR__.'/auth.php';
