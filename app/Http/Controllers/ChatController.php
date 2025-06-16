@@ -6,9 +6,8 @@ use App\Models\User;
 
 class ChatController extends Controller
 {
-    public function show($sellerId)
+    public function show()
     {
-        $seller = User::findOrFail($sellerId);
-        return view('chat', compact('seller'));
+        return view('chat');
     }
 }
