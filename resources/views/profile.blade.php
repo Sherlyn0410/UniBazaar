@@ -4,14 +4,14 @@
     <div class="container mt-0 px-4" style="margin-top: -80px;">
         <div class="d-flex flex-wrap align-items-center">
             <div class="me-4 mb-3">
-                <img src="{{ $user->profile_image ? asset('storage/profile_images/' . $user->profile_image) : 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }}"
+                <img src="{{ $student->profile_image ? asset('storage/profile_images/' . $student->profile_image) : 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }}"
                      alt="Profile"
                      class="rounded-circle border border-white shadow"
                      style="width: 130px; height: 130px; object-fit: cover;">
             </div>
 
             <div class="me-auto mb-3">
-                <h4 class="mb-1">{{ $user->name }}</h4>
+                <h4 class="mb-1">{{ $student->name }}</h4>
                 <small class="text-muted">Verified User</small>
                 <div class="mt-2">
                     <label for="profile_image" class="btn btn-outline-secondary btn-sm">
@@ -60,17 +60,16 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Name</label>
-                                <input type="text" name="name" class="form-control" value="{{ old('name', $user->name) }}" readonly>
+                                <input type="text" name="name" class="form-control" value="{{ old('name', $student->name) }}" >
                             </div>
-
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Email</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" readonly>
+                                <input type="email" name="email" class="form-control" value="{{ old('email', $student->email) }}" readonly>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Phone</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $user->phone) }}" readonly>
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $student->phone) }}" >
                             </div>
                         </div>
                     </form>

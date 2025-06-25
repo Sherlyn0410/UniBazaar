@@ -15,6 +15,9 @@ class AdminController extends Controller
         return view('view-student',['students' => $students]);
     }
 
+    public function viewAdmin(){
+        return view('admin');
+    }
 
        public function viewProduct(){
 $products = Product::with('student')->get();
