@@ -56,7 +56,7 @@
                 <!-- Settings Dropdown -->
                 <div class="dropdown">
                     <button class="btn dropdown-toggle p-0 bg-transparent border-0 shadow-none" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{-- {{ Auth::user()->name }} --}}
+                        {{ Auth::user()->name }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end mt-3" aria-labelledby="userDropdown">
                         <li><a class="dropdown-item" href="{{ route('profile') }}">{{ __('Profile') }}</a></li>
