@@ -23,33 +23,64 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
-Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
+Route::middleware(['auth'])->group(function () {
 
 Route::get('/', [MainController::class, 'viewMain'])->name('main');
-Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
-Route::get('/product/{id}', [MainController::class, 'viewProductDetails'])->name('product.show');
-Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+
+//user eh route put here (exclude seller)
+ Route::prefix('user')->group(function(){
+
+    Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
+    Route::get('/product/{id}', [MainController::class, 'viewProductDetails'])->name('product.show');
+    Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.place');
+    Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.index');
+    Route::delete('/cart/{id}/remove', [CartController::class, 'removeFromCart'])->name('cart.remove')->middleware('auth');
+    Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('profile');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/{product}/product-edit', [ProfileController::class, 'editProduct'])->name('edit.product');
+    Route::put('/{product}/product-edit', [ProfileController::class, 'updateProduct'])->name('update.product');
+
+
+});
+//seller route put inside here
+Route::prefix('seller')->group(function(){
 
 Route::get('product-upload', [SellerController::class, 'createProducts'])->name('products.upload');
 Route::post('product-upload', [SellerController::class, 'storeProducts'])->name('products.store');
 
-Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
-Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
+
+ });
+});
+
+ //admin route put here
+Route::prefix('admin')->group(function (){
+
+    Route::get('/', [AdminController::class, 'viewAdmin'])->name('view.admin');
+    Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
+    Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+
+});
 
 
 
-Route::get('/cart', [CartController::class, 'viewCart'])->name('cart.index');
-Route::delete('/cart/{id}/remove', [CartController::class, 'removeFromCart'])->name('cart.remove')->middleware('auth');
+
+
+
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+
+
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
 });
 
 Route::middleware(['auth'])->group(function () {
