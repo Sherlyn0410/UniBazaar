@@ -24,4 +24,16 @@ class MainController extends Controller
         $product = Product::with('student')->findOrFail($id); // Load the product and related student info
         return view('product-details', compact('product'));
     }
+
+    public function search(Request $request)
+{
+    $query = $request->input('query');
+
+    $results = Product::where('product_name', 'LIKE', "%{$query}%")->get();
+
+    return view('result', compact('results', 'query'));
+}
+
+
+
 }

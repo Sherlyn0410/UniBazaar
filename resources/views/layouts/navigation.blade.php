@@ -22,7 +22,7 @@
             <ul class="navbar-nav mb-2 mb-lg-0 m-auto">
                 <!-- Search Bar -->
                 <li class="me-4">
-                    <form class="d-flex">
+                    <form class="d-flex" action="{{ route('search') }}" method="GET">
                         <input class="form-control me-2" type="search" name="query" placeholder="Search..." aria-label="Search">
                         <button class="btn btn-outline-secondary" type="submit">Search</button>
                     </form>
