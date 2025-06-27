@@ -41,6 +41,8 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/{product}/product-edit', [ProfileController::class, 'editProduct'])->name('edit.product');
     Route::put('/{product}/product-edit', [ProfileController::class, 'updateProduct'])->name('update.product');
+    Route::get('/search', [MainController::class, 'search'])->name('search');
+
 
 
 });
