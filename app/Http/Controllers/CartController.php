@@ -22,6 +22,14 @@ class CartController extends Controller
 
 public function addToCart(Request $request)
 {
+
+    $product = Product::findOrFail($request->product_id);
+    $requestedQuantity = (int) $request->quantity;
+
+    if ($requestedQuantity > $product->quantity) {
+        return back()->with('error', 'Requested quantity exceeds available stock.');
+    }
+    
     $request->validate([
         'product_id' => 'required|exists:products,id',
         'quantity' => 'required|integer|min:1'

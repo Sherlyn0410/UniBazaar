@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Models\Product;
+use App\Models\Order;
 
 
 use App\Http\Controllers\Controller;
@@ -20,8 +21,14 @@ class AdminController extends Controller
     }
 
        public function viewProduct(){
-$products = Product::with('student')->get();
+        $products = Product::with('student')->get();
         return view('view-product',['products' => $products]);
+       }
+
+       public function viewOrder(){
+        $orders = Order::with(['buyer', 'product'])->latest()->get();
+        return view('view-order', compact('orders'));
     }
-}
+    }
+
 
