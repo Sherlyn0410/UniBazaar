@@ -34,7 +34,13 @@
                     <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-center gap-3 flex-wrap">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <input type="hidden" name="quantity" value="1">
+                        <div class="d-flex align-items-center gap-2">
+                            <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">−</button>
+                            <input type="number" name="quantity" id="quantity" class="form-control text-center" style="width: 80px;" value="1" min="1" max="{{ $product->quantity }}">
+                            <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                        </div>
+                        <small class="text-muted">Available stock: {{ $product->quantity }}</small>
+                        <small id="stock-warning" class="text-danger d-none">⚠️ Stock not enough</small>
                         @if($inCart)
                             <x-red-outline-button type="button" onclick="window.location='{{ route('cart.index') }}'">
                                 <i class="bi bi-cart-check me-2"></i>
@@ -46,9 +52,10 @@
                                 {{ __('Add to Cart') }}
                             </x-red-outline-button>
                         @endif
-                        <x-red-button type="button" onclick="window.location='{{ route('buy.now', $product->id) }}'">
-    <i class="bi bi-bag-check me-2"></i> Buy Now
-</x-red-button>
+                      <x-red-button type="button" id="buy-now-btn" onclick="handleBuyNow({{ $product->id }})">
+                            <i class="bi bi-bag-check me-2"></i> Buy Now
+                    </x-red-button>
+
                     </form>
                 </div>
             </div>
@@ -56,3 +63,89 @@
     </div>
 </x-app-layout>
 
+<script>
+    const maxQuantity = {{ $product->quantity }};
+
+    function decreaseQuantity() {
+        const input = document.getElementById('quantity');
+        let value = parseInt(input.value);
+        if (value > 1) {
+            input.value = value - 1;
+            hideStockWarning();
+        }
+    }
+
+    function increaseQuantity() {
+        const input = document.getElementById('quantity');
+        let value = parseInt(input.value);
+        if (value < maxQuantity) {
+            input.value = value + 1;
+            hideStockWarning();
+        } else {
+            showStockWarning();
+        }
+    }
+
+    function showStockWarning() {
+        document.getElementById('stock-warning').classList.remove('d-none');
+    }
+
+    function hideStockWarning() {
+        document.getElementById('stock-warning').classList.add('d-none');
+    }
+
+    // Optional: real-time validation when user types manually
+    document.getElementById('quantity').addEventListener('input', function () {
+        if (parseInt(this.value) > maxQuantity) {
+            showStockWarning();
+        } else {
+            hideStockWarning();
+        }
+    });
+
+ const buyNowBtn = document.getElementById('buy-now-btn');
+    const quantityInput = document.getElementById('quantity');
+
+    function updateBuyNowState() {
+        const value = parseInt(quantityInput.value);
+        if (value > maxQuantity || maxQuantity === 0) {
+            buyNowBtn.disabled = true;
+            showStockWarning();
+        } else {
+            buyNowBtn.disabled = false;
+            hideStockWarning();
+        }
+    }
+
+    // Modify the listeners to also update buy-now state
+    quantityInput.addEventListener('input', updateBuyNowState);
+
+    function decreaseQuantity() {
+        const value = parseInt(quantityInput.value);
+        if (value > 1) {
+            quantityInput.value = value - 1;
+        }
+        updateBuyNowState();
+    }
+
+    function increaseQuantity() {
+        const value = parseInt(quantityInput.value);
+        if (value < maxQuantity) {
+            quantityInput.value = value + 1;
+        }
+        updateBuyNowState();
+    }
+
+  function handleBuyNow(productId) {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    if (quantity > 0 && quantity <= {{ $product->quantity }}) {
+        window.location.href = `/buy-now/${productId}?quantity=${quantity}`;
+    } else {
+        alert('Stock not enough.');
+    }
+}
+
+    // Initial state check
+    updateBuyNowState();
+
+</script>

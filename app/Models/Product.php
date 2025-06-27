@@ -10,8 +10,10 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'category',
         'product_name',
         'product_price',
+        'quantity',
         'product_details',
         'product_image',
         'student_id',
@@ -20,6 +22,10 @@ class Product extends Model
  public function student()
 {
     return $this->belongsTo(Student::class);
+}
+public function orders()
+{
+    return $this->hasMany(Order::class);
 }
 
 }

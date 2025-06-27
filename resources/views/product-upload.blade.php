@@ -10,9 +10,27 @@
                         <input type="file" name="product_image" id="product_image" class="form-control" accept="image/*" required>
                     </div>
 
+                     <div class="mb-3">
+                        <label for="category" class="form-label fw-semibold">Product Name</label>
+                            <select id="category" name="category">
+                            <option value="laptop">Laptop and Notebook</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="tablets">Tablets</option>
+                            <option value="mobile-phone">Mobile Phone</option>
+                            <option value="video-game">Video Game Consoles</option>
+                            <option value="study-material">Study Material</option>
+                            <option value="stationeries">Stationeries</option>
+                            </select>
+                        </div>
+
                     <div class="mb-3">
                         <label for="product_name" class="form-label fw-semibold">Product Name</label>
                         <input type="text" name="product_name" id="product_name" class="form-control" required>
+                    </div>
+
+                     <div class="mb-3">
+                        <label for="quantity" class="form-label fw-semibold">Quantity</label>
+                        <input type="text" name="quantity" id="quantity" class="form-control" required>
                     </div>
 
                     <div class="mb-3">

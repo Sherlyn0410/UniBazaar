@@ -62,6 +62,7 @@ Route::prefix('admin')->group(function (){
     Route::get('/', [AdminController::class, 'viewAdmin'])->name('view.admin');
     Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
     Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
+    Route::get('view-order', [AdminController::class, 'viewOrder'])->name('view-order');
 
 
 
