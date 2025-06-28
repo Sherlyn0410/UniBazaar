@@ -19,6 +19,12 @@
                value="{{ old('product_price', $product->product_price) }}" required>
     </div>
 
+    <div class="form-group">
+        <label for="product_price">Product Quantity</label>
+        <input type="number" step="0.01" class="form-control" id="quantity" name="quantity"
+               value="{{ old('quantity', $product->quantity) }}" required>
+    </div>
+
     <!-- Product Image -->
     <div class="form-group">
         <label for="product_image">Product Image</label>

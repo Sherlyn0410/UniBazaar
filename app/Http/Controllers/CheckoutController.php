@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cart;
+use Stripe\Stripe;
+use Stripe\Charge;
+use App\Models\Order;
+use App\Models\Product;
+
 
 class CheckoutController extends Controller
 {
@@ -32,5 +37,90 @@ class CheckoutController extends Controller
 
         return redirect()->route('main')->with('status', 'Order placed successfully!');
     }
+
+    public function checkout(Product $product)
+{
+    return view('checkout', compact('product'));
+}
+
+
+public function charge(Request $request)
+{
+    Stripe::setApiKey(config('services.stripe.secret'));
+
+    $product = Product::findOrFail($request->product_id);
+    $quantity = (int) $request->quantity;
+    $total = $product->product_price * $quantity;
+
+    try {
+        $charge = Charge::create([
+            'amount' => $total * 100, // Stripe expects cents
+            'currency' => 'myr',
+            'source' => $request->stripeToken,
+            'description' => 'Payment for ' . $product->product_name,
+        ]);
+
+        // ✅ Save order in database
+        Order::create([
+            'buyer_id' => auth()->id(),
+            'product_id' => $product->id,
+            'quantity' => $quantity,
+            'ordered_at' => now(),
+            'payment_method' => 'Stripe',
+            'stripe_payment_id' => $charge->id,
+            'is_paid' => true,
+        ]);
+
+        // ✅ Reduce product stock
+        $product->quantity -= $quantity;
+        $product->save();
+
+        return redirect()->route('marketplace')->with('success', 'Payment successful and order placed!');
+    } catch (\Exception $e) {
+        return back()->with('error', $e->getMessage());
+    }
+}
+
+
+ public function processCartPayment(Request $request)
+{
+    Stripe::setApiKey(config('services.stripe.secret'));
+
+    try {
+        $charge = Charge::create([
+            'amount' => $request->total * 100,
+            'currency' => 'myr',
+            'source' => $request->stripeToken,
+            'description' => 'Cart Payment by User ID: ' . auth()->id(),
+        ]);
+
+        foreach ($request->cart_items as $itemId => $data) {
+            $product = Product::find($data['product_id']);
+            if (!$product) continue;
+
+            // Save order
+            Order::create([
+                'buyer_id' => auth()->id(),
+                'product_id' => $data['product_id'],
+                'quantity' => $data['quantity'],
+                'ordered_at' => now(),
+                'payment_method' => 'Stripe',
+                'stripe_payment_id' => $charge->id,
+                'is_paid' => true,
+            ]);
+
+            // Reduce product stock
+            $product->quantity -= $data['quantity'];
+            $product->save();
+
+            // Remove from cart
+            Cart::destroy($itemId);
+        }
+
+        return redirect()->route('marketplace')->with('success', 'Payment complete and order placed!');
+    } catch (\Exception $e) {
+        return back()->with('error', $e->getMessage());
+    }
+}
 }
 

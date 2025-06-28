@@ -52,7 +52,9 @@
             <div class="text-end mt-4">
                 <h5>Subtotal: <span class="fw-bold">RM {{ number_format($subtotal, 2) }}</span></h5>
                 <h4 class="text-danger fw-bold">Total: RM {{ number_format($subtotal, 2) }}</h4>
-                <a href="{{ route('checkout') }}" class="btn btn-danger mt-2">Proceed to Checkout</a>
+                <form action="{{ route('cart.checkout') }}" method="GET">
+                <button type="submit" class="btn btn-danger mt-2">Proceed to Checkout</button>
+                </form>             
             </div>
         @else
             <div class="alert alert-info mt-5 text-center">

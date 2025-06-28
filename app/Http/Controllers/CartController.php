@@ -29,7 +29,7 @@ public function addToCart(Request $request)
     if ($requestedQuantity > $product->quantity) {
         return back()->with('error', 'Requested quantity exceeds available stock.');
     }
-    
+
     $request->validate([
         'product_id' => 'required|exists:products,id',
         'quantity' => 'required|integer|min:1'
@@ -67,6 +67,17 @@ public function removeFromCart($id)
     $cartItem->delete();
 
     return redirect()->route('cart.index')->with('success', 'Item removed from cart.');
+}
+
+    public function checkoutCart()
+{
+    $cartItems = Cart::with('product')->where('student_id', Auth::id())->get();
+
+    if ($cartItems->isEmpty()) {
+        return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+    }
+
+    return view('cart-checkout', compact('cartItems'));
 }
 }
 

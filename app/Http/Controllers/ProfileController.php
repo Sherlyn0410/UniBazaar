@@ -65,6 +65,7 @@ public function updateProduct(Request $request, Product $product)
     $data = $request->validate([
         'product_name' => 'required|string|max:255',
         'product_price' => 'required|numeric',
+        'quantity' => 'required|numeric',
         'product_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     ]);
 
@@ -81,6 +82,7 @@ public function updateProduct(Request $request, Product $product)
     $product->update([
         'product_name' => $data['product_name'],
         'product_price' => $data['product_price'],
+        'quantity' => $data['quantity'],
     ]);
 
     return redirect()->route('profile')->with('status', 'Product updated successfully!');
