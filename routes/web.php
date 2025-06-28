@@ -42,6 +42,10 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::get('/{product}/product-edit', [ProfileController::class, 'editProduct'])->name('edit.product');
     Route::put('/{product}/product-edit', [ProfileController::class, 'updateProduct'])->name('update.product');
     Route::get('/search', [MainController::class, 'search'])->name('search');
+    Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('stripe.checkout');
+    Route::post('/charge', [CheckoutController::class, 'charge'])->name('stripe.charge');
+    Route::post('/checkout/pay', [CheckoutController::class, 'processCartPayment'])->name('stripe.checkout.pay');
+    Route::get('/checkout', [CartController::class, 'checkoutCart'])->name('cart.checkout');
 
 
 
