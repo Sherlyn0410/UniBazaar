@@ -16,8 +16,8 @@
                                 <div class="text-warning fs-6">4.7 <i class="bi bi-star-fill ms-1 me-2"></i>(56 Reviews)</div>
                             </div>
                             <a href="{{ route('chat', $product->student_id) }}" class="btn btn-outline-secondary">
-    <i class="bi bi-chat-dots me-2"></i> Chat
-</a>
+                                <i class="bi bi-chat-dots me-2"></i> Chat
+                            </a>
                         </div>
                         <hr>
                         <h3 class="fw-semibold mb-2">{{ $product->product_name }}</h3>
@@ -31,30 +31,35 @@
                             ->where('product_id', $product->id)
                             ->exists();
                     @endphp
-                    <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-center gap-3 flex-wrap">
+                    <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-start gap-3 flex-column">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
-                        <div class="d-flex align-items-center gap-2">
-                            <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">−</button>
-                            <input type="number" name="quantity" id="quantity" class="form-control text-center" style="width: 80px;" value="1" min="1" max="{{ $product->quantity }}">
-                            <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">−</button>
+                                <input type="number" name="quantity" id="quantity" class="form-control text-center" style="width: 80px;" value="1" min="1" max="{{ $product->quantity }}">
+                                <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                            </div>
+                            <small class="text-muted">Available stock: {{ $product->quantity }}</small>
+                            <small id="stock-warning" class="text-danger d-none">⚠️ Stock not enough</small>
                         </div>
-                        <small class="text-muted">Available stock: {{ $product->quantity }}</small>
-                        <small id="stock-warning" class="text-danger d-none">⚠️ Stock not enough</small>
-                        @if($inCart)
-                            <x-red-outline-button type="button" onclick="window.location='{{ route('cart.index') }}'">
+                        <div>
+                            @if($inCart)
+                            <x-red-outline-button class="me-3" type="button" onclick="window.location='{{ route('cart.index') }}'">
                                 <i class="bi bi-cart-check me-2"></i>
                                 {{ __('Added to Cart') }}
                             </x-red-outline-button>
-                        @else
-                            <x-red-outline-button type="submit">
+                            @else
+                            <x-red-outline-button class="me-3" type="submit">
                                 <i class="bi bi-cart-plus me-2"></i>
                                 {{ __('Add to Cart') }}
                             </x-red-outline-button>
-                        @endif
-                      <x-red-button type="button" id="buy-now-btn" onclick="handleBuyNow({{ $product->id }})">
-                            <i class="bi bi-bag-check me-2"></i> Buy Now
-                    </x-red-button>
+                            @endif
+                            <x-red-button type="button" id="buy-now-btn" onclick="handleBuyNow({{ $product->id }})">
+                                <i class="bi bi-bag-check me-2"></i> Buy Now
+                            </x-red-button>
+                        </div>
+                        
 
                     </form>
                 </div>
