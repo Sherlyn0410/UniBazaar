@@ -9,43 +9,43 @@
                     <!-- Categories -->
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/laptop.jpg" alt="Category 1" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{ asset('assets/img/laptop.jpg') }}" alt="Category 1" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Laptops & Notebooks</div>
                     </div>
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/accessory.jpeg" alt="Category 2" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{asset('assets/img/accessory.jpeg')}}" alt="Category 2" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Accessories</div>
                     </div>
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/tablet.jpg" alt="Category 3" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{asset('assets/img/tablet.jpg')}}" alt="Category 3" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Tablets</div>
                     </div>
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/mobile.jpg" alt="Category 4" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{asset('assets/img/mobile.jpg')}}" alt="Category 4" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Mobile Phones</div>
                     </div>
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/video.jpg" alt="Category 6" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{asset('assets/img/video.jpg')}}" alt="Category 6" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Video Game Consoles</div>
                     </div>
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/study.jpg" alt="Category 5" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{asset('assets/img/study.jpg')}}" alt="Category 5" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Study Materials</div>
                     </div>
                     <div class="text-center me-5">
                         <div class="">
-                            <img src="assets/img/sta.jpg" alt="Category 7" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                            <img src="{{asset('assets/img/sta.jpg')}}" alt="Category 7" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
                         <div class="mt-2">Stationeries</div>
                     </div>
