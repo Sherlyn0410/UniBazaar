@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Student;
 use App\Models\Product;
+use App\Models\Order;
+
 
 
 class ProfileController extends Controller
@@ -15,8 +17,10 @@ class ProfileController extends Controller
     {
         // Retrieve the currently authenticated student
         $student = Auth::guard('web')->user(); // 'web' guard uses 'students' provider if set in config/auth.php
-         $products = Product::all(); // Get all products from the database or any other source
-        return view('profile', compact('student', 'products'));
+        $products = Product::all(); // Get all products from the database or any other source
+        $orders = Order::with(['buyer', 'product'])->latest()->get();
+
+        return view('profile', compact('student', 'products', 'orders'));
     }
 
     public function update(Student $student, Request $request)
