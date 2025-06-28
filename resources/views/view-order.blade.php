@@ -11,6 +11,7 @@
                             <th>#</th>
                             <th>Product</th>
                             <th>Buyer</th>
+                            <th>Seller</th>
                             <th>Quantity</th>
                             <th>Total (RM)</th>
                             <th>Ordered At</th>
@@ -25,6 +26,7 @@
                                     <img src="{{ asset($order->product->product_image) }}" alt="product" width="60">
                                 </td>
                                 <td>{{ $order->buyer->name }}</td>
+                                <td>{{ $order->product->student->name }}</td>
                                 <td>{{ $order->quantity }}</td>
                                 <td>RM {{ number_format($order->product->product_price * $order->quantity, 2) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($order->ordered_at)->format('d M Y, h:i A') }}</td>

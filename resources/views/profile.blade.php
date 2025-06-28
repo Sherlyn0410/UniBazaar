@@ -69,7 +69,7 @@
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-semibold">Phone</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $student->phone) }}" >
+                                <input type="text" name="contact" class="form-control" value="{{ old('contact', $student->contact) }}" >
                             </div>
                         </div>
                     </form>
