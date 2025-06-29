@@ -59,9 +59,31 @@
                                 <i class="bi bi-bag-check me-2"></i> Buy Now
                             </x-red-button>
                         </div>
-                        
-
                     </form>
+
+                    {{-- Review Form --}}
+                    @if(Auth::check())
+                        <form action="{{ route('products.review', $product->id) }}" method="POST" class="mt-5">
+                            @csrf
+                            <div class="mb-2">
+                                <label for="rating">Rating</label>
+                                <select name="rating" id="rating" class="form-select" required>
+                                    <option value="">-- Select Rating --</option>
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <option value="{{ $i }}">{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
+                                    @endfor
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="review">Your Review (optional)</label>
+                                <textarea name="review" class="form-control" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit Review</button>
+                        </form>
+                    @else
+                        <p class="text-muted mt-3">Please <a href="{{ route('login') }}">log in</a> to leave a review.</p>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -70,25 +92,19 @@
 
 <script>
     const maxQuantity = {{ $product->quantity }};
+    const quantityInput = document.getElementById('quantity');
+    const buyNowBtn = document.getElementById('buy-now-btn');
 
     function decreaseQuantity() {
-        const input = document.getElementById('quantity');
-        let value = parseInt(input.value);
-        if (value > 1) {
-            input.value = value - 1;
-            hideStockWarning();
-        }
+        let value = parseInt(quantityInput.value);
+        if (value > 1) quantityInput.value = value - 1;
+        updateBuyNowState();
     }
 
     function increaseQuantity() {
-        const input = document.getElementById('quantity');
-        let value = parseInt(input.value);
-        if (value < maxQuantity) {
-            input.value = value + 1;
-            hideStockWarning();
-        } else {
-            showStockWarning();
-        }
+        let value = parseInt(quantityInput.value);
+        if (value < maxQuantity) quantityInput.value = value + 1;
+        updateBuyNowState();
     }
 
     function showStockWarning() {
@@ -98,18 +114,6 @@
     function hideStockWarning() {
         document.getElementById('stock-warning').classList.add('d-none');
     }
-
-    // Optional: real-time validation when user types manually
-    document.getElementById('quantity').addEventListener('input', function () {
-        if (parseInt(this.value) > maxQuantity) {
-            showStockWarning();
-        } else {
-            hideStockWarning();
-        }
-    });
-
- const buyNowBtn = document.getElementById('buy-now-btn');
-    const quantityInput = document.getElementById('quantity');
 
     function updateBuyNowState() {
         const value = parseInt(quantityInput.value);
@@ -122,35 +126,16 @@
         }
     }
 
-    // Modify the listeners to also update buy-now state
     quantityInput.addEventListener('input', updateBuyNowState);
 
-    function decreaseQuantity() {
-        const value = parseInt(quantityInput.value);
-        if (value > 1) {
-            quantityInput.value = value - 1;
+    function handleBuyNow(productId) {
+        const quantity = parseInt(quantityInput.value);
+        if (quantity > 0 && quantity <= maxQuantity) {
+            window.location.href = `/buy-now/${productId}?quantity=${quantity}`;
+        } else {
+            alert('Stock not enough.');
         }
-        updateBuyNowState();
     }
 
-    function increaseQuantity() {
-        const value = parseInt(quantityInput.value);
-        if (value < maxQuantity) {
-            quantityInput.value = value + 1;
-        }
-        updateBuyNowState();
-    }
-
-  function handleBuyNow(productId) {
-    const quantity = parseInt(document.getElementById('quantity').value);
-    if (quantity > 0 && quantity <= {{ $product->quantity }}) {
-        window.location.href = `/buy-now/${productId}?quantity=${quantity}`;
-    } else {
-        alert('Stock not enough.');
-    }
-}
-
-    // Initial state check
     updateBuyNowState();
-
 </script>

@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\BuyNowController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ReviewController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,11 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::post('/checkout/pay', [CheckoutController::class, 'processCartPayment'])->name('stripe.checkout.pay');
     Route::get('/checkout', [CartController::class, 'checkoutCart'])->name('cart.checkout');
     Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+    Route::get('/privacy-policy', function () {
+    return view('privacy');
+})->name('privacy.policy');
+Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('products.review');
+
 
 
 });
@@ -70,9 +76,9 @@ Route::prefix('admin')->group(function (){
     Route::get('/pending', [AdminController::class, 'pending'])->name('admin.products.pending');
     Route::post('/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
     Route::post('/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
-
-
-
+    Route::get('/privacy-policy', function () {
+    return view('privacy');
+})->name('privacy.policy');
 
 });
 
