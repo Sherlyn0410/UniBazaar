@@ -78,7 +78,10 @@
                     @endforeach
                 </div>
             @else
-                <p>No results found.</p>
+                <div class="text-center py-5 text-muted fs-4">
+                    <i class="bi bi-emoji-frown mb-2" style="font-size:2rem;"></i><br>
+                    No product found.
+                </div>
             @endif
         </div>
         @endif
@@ -88,25 +91,32 @@
             <div class="mb-4">
                 <h3 class="text-left">All Products</h3>
             </div>
-            <div class="row g-4">
-                @foreach ($products->shuffle() as $product)
-                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                        <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark">
-                            <div>
-                                <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px; width: 100%; object-fit: cover;" />
-                                <div class="card-body">
-                                    <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
-                                    <h6 class="card-text">RM{{ $product->product_price }}</h6>
-                                    <p class="text-truncate">
-                                        <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
-                                        {{ $product->student->name }}
-                                    </p>
+            @if($products->count())
+                <div class="row g-4">
+                    @foreach($products->shuffle() as $product)
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                            <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark">
+                                <div>
+                                    <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px; width: 100%; object-fit: cover;" />
+                                    <div class="card-body">
+                                        <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
+                                        <h6 class="card-text">RM{{ $product->product_price }}</h6>
+                                        <p class="text-truncate">
+                                            <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
+                                            {{ $product->student->name }}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                @endforeach
-            </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center py-5 text-muted fs-4">
+                    <i class="bi bi-emoji-frown mb-2" style="font-size:2rem;"></i><br>
+                    No product found.
+                </div>
+            @endif
         </div>
     </div>
     

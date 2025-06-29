@@ -4,12 +4,6 @@
             <div class="carousel-item active">
                 <img src="assets/img/slide1.png" class="d-block w-100" alt="welcome">
             </div>
-            <!-- <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-            </div> -->
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -28,7 +22,7 @@
             </div>
             <div class="overflow-auto">
                 <div class="d-flex flex-row">
-                    @foreach ($products->shuffle() as $product)
+                    @forelse ($products->shuffle() as $product)
                         <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark me-3">
                             <div style="width: 200px;">
                                 <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px;" />
@@ -42,7 +36,12 @@
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <div class="text-center py-5 text-muted fs-4 w-100">
+                            <i class="bi bi-emoji-frown mb-2" style="font-size:2rem;"></i><br>
+                            No product found.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
@@ -54,7 +53,7 @@
             </div>
             <div class="overflow-auto">
                 <div class="d-flex flex-row">
-                    @foreach ($products as $product)
+                    @forelse ($products as $product)
                         <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark me-3">
                             <div style="width: 200px;">
                                 <img src="{{ asset($product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px;" />
@@ -68,11 +67,14 @@
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <div class="text-center py-5 text-muted fs-4 w-100">
+                            <i class="bi bi-emoji-frown mb-2" style="font-size:2rem;"></i><br>
+                            No product found.
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
     </div>
-
 </x-app-layout>
-</html>
