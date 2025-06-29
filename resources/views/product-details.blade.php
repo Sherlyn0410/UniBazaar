@@ -13,7 +13,6 @@
                         <div class="mb-2 d-flex justify-content-between align-items-end">
                             <div>
                                 <div class="fw-semibold fs-5">{{ $product->student->name }}</div>
-                                <div class="text-warning fs-6">4.7 <i class="bi bi-star-fill ms-1 me-2"></i>(56 Reviews)</div>
                             </div>
                             <a href="{{ route('chat', $product->student_id) }}" class="btn btn-outline-secondary">
                                 <i class="bi bi-chat-dots me-2"></i> Chat
@@ -26,11 +25,13 @@
                         <h5 class="fw-semibold mb-2">Description</h5>
                         <p class="text-secondary">{{ $product->product_details }}</p>
                     </div>
+
                     @php
                         $inCart = \App\Models\Cart::where('student_id', Auth::id())
                             ->where('product_id', $product->id)
                             ->exists();
                     @endphp
+
                     <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-start gap-3 flex-column">
                         @csrf
                         <input type="hidden" name="product_id" value="{{ $product->id }}">
@@ -60,30 +61,6 @@
                             </x-red-button>
                         </div>
                     </form>
-
-                    {{-- Review Form --}}
-                    @if(Auth::check())
-                        <form action="{{ route('products.review', $product->id) }}" method="POST" class="mt-5">
-                            @csrf
-                            <div class="mb-2">
-                                <label for="rating">Rating</label>
-                                <select name="rating" id="rating" class="form-select" required>
-                                    <option value="">-- Select Rating --</option>
-                                    @for($i = 1; $i <= 5; $i++)
-                                        <option value="{{ $i }}">{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
-                                    @endfor
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="review">Your Review (optional)</label>
-                                <textarea name="review" class="form-control" rows="3"></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Submit Review</button>
-                        </form>
-                    @else
-                        <p class="text-muted mt-3">Please <a href="{{ route('login') }}">log in</a> to leave a review.</p>
-                    @endif
-
                 </div>
             </div>
         </div>
@@ -139,3 +116,4 @@
 
     updateBuyNowState();
 </script>
+
