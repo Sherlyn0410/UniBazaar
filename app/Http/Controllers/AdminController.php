@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ProductApproved;
+use App\Mail\ProductRejected;
 use App\Models\Student;
 use App\Models\Product;
 use App\Models\Order;
@@ -39,19 +42,23 @@ class AdminController extends Controller
         public function approve(Product $product)
         {
 
-            $product->update(['is_approved' => true]);
-            return back()->with('success', 'Product approved and now live.');
+           $product->update(['is_approved' => true]);
 
+            Mail::to($product->student->email)->send(new ProductApproved($product));
+
+            return back()->with('success', 'Product approved and email sent.');
         }
 
         public function reject(Product $product)
-    {
-    $product->delete();
+        {
+                $product->update(['is_approved' => false]); // or delete if you prefer
 
-    // $product->update(['is_rejected' => true]);
+                Mail::to($product->student->email)->send(new ProductRejected($product));
+                    $product->delete();
 
-    return back()->with('success', 'Product has been rejected.');
-    }
+
+                return back()->with('success', 'Product rejected and email sent.');
+        }
     }
 
 

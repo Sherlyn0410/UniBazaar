@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
-
+Use App\Http\Controllers\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Models\Cart;
 use Stripe\Stripe;
 use Stripe\Charge;
 use App\Models\Order;
 use App\Models\Product;
-
+use App\Mail\OrderConfirmation;
 
 class CheckoutController extends Controller
 {
@@ -95,28 +96,36 @@ public function charge(Request $request)
         ]);
 
         foreach ($request->cart_items as $itemId => $data) {
-            $product = Product::find($data['product_id']);
-            if (!$product) continue;
+    $product = Product::find($data['product_id']);
+    if (!$product) continue;
 
-            // Save order
-            Order::create([
-                'buyer_id' => auth()->id(),
-                'product_id' => $data['product_id'],
-                'quantity' => $data['quantity'],
-                'ordered_at' => now(),
-                'payment_method' => 'Stripe',
-                'stripe_payment_id' => $charge->id,
-                'is_paid' => true,
-            ]);
+    // ✅ Save order and store in variable
+    $order = Order::create([
+        'buyer_id' => auth()->id(),
+        'product_id' => $data['product_id'],
+        'quantity' => $data['quantity'],
+        'ordered_at' => now(),
+        'payment_method' => 'Stripe',
+        'stripe_payment_id' => $charge->id,
+        'is_paid' => true,
+    ]);
 
-            // Reduce product stock
-            $product->quantity -= $data['quantity'];
-            $product->save();
 
-            // Remove from cart
-            Cart::destroy($itemId);
-        }
+    // ✅ Update product stock
+    $product->quantity -= $data['quantity'];
+    $product->save();
 
+    // ✅ Remove from cart
+    Cart::destroy($itemId);
+}
+
+    // ✅ Send confirmation email
+    $order->load('buyer', 'product');
+   try {
+    Mail::to(auth()->user()->email)->send(new OrderConfirmation($order));
+} catch (\Exception $e) {
+    dd("Email failed: " . $e->getMessage());
+}
         return redirect()->route('marketplace')->with('success', 'Payment complete and order placed!');
     } catch (\Exception $e) {
         return back()->with('error', $e->getMessage());
