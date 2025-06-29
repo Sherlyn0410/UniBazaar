@@ -31,6 +31,25 @@
         </div>
 
         <div class="row mt-4">
+            <!-- Alert Messages -->
+            @if (session('status'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('status') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            @if ($errors->any())
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <!-- Sidebar -->
             <div class="col-md-3 border-end">
                 <ul class="nav flex-column">
@@ -82,21 +101,6 @@
                 <div id="orders-section" class="content-section" style="display: none;">@include('orders')</div>
             </div>
         </div>
-
-        <!-- Flash Messages -->
-        @if (session('status'))
-            <div class="alert alert-success mt-4">{{ session('status') }}</div>
-        @endif
-
-        @if ($errors->any())
-            <div class="alert alert-danger mt-3">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
     </div>
 
     <!-- Icons -->
@@ -128,13 +132,6 @@
             });
         });
     </script>
-
-    <style>
-        .nav-link { transition: all 0.3s ease; }
-        .nav-link:hover { background-color: #f8f9fa; border-radius: 4px; }
-        .content-section { animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
 </x-app-layout>
 
 
