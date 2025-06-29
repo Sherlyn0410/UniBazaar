@@ -52,6 +52,22 @@
                 </div>
             </div>
         </div>
+
+            @if(request()->has('query') && !empty($query))
+    <div class="container py-4">
+        <h3>Search results for "{{ $query }}"</h3>
+        
+        @if($results->count())
+            <ul>
+                @foreach($results as $product)
+                    <li>{{ $product->product_name }}</li>
+                @endforeach
+            </ul>
+        @else
+            <p>No results found.</p>
+        @endif
+    </div>
+@endif
         <!-- Show all product listings -->
         <div class="container py-4">
             <div class="mb-4">

@@ -13,10 +13,14 @@ class MainController extends Controller
         return view('main', compact('products'));
     }
 
-    public function viewMarketplace()
+    public function viewMarketplace(Request $request)
     {
         $products = Product::all(); // Get all products from the database or any other source
-        return view('marketplace', compact('products'));
+        $query = $request->input('query');
+
+    $results = Product::where('product_name', 'LIKE', "%{$query}%")->get();
+
+        return view('marketplace', compact('products', 'results', 'query'));
     }
 
     public function viewProductDetails($id)
@@ -25,14 +29,14 @@ class MainController extends Controller
         return view('product-details', compact('product'));
     }
 
-    public function search(Request $request)
-{
-    $query = $request->input('query');
+//     public function search(Request $request)
+// {
+//     $query = $request->input('query');
 
-    $results = Product::where('product_name', 'LIKE', "%{$query}%")->get();
+//     $results = Product::where('product_name', 'LIKE', "%{$query}%")->get();
 
-    return view('result', compact('results', 'query'));
-}
+//     return view('result', compact('results', 'query'));
+// }
 
 
 
