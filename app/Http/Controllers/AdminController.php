@@ -29,6 +29,29 @@ class AdminController extends Controller
         $orders = Order::with(['buyer', 'product'])->latest()->get();
         return view('view-order', compact('orders'));
     }
+
+        public function pending()
+    {
+        $products = Product::where('is_approved', false)->with('student')->get();
+        return view('pending', compact('products'));
+    }
+
+        public function approve(Product $product)
+        {
+
+            $product->update(['is_approved' => true]);
+            return back()->with('success', 'Product approved and now live.');
+
+        }
+
+        public function reject(Product $product)
+    {
+    $product->delete();
+
+    // $product->update(['is_rejected' => true]);
+
+    return back()->with('success', 'Product has been rejected.');
+    }
     }
 
 

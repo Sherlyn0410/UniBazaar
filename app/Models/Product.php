@@ -17,6 +17,7 @@ class Product extends Model
         'product_details',
         'product_image',
         'student_id',
+        'is_approved'
         ];
         
  public function student()
