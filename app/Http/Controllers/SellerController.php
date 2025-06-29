@@ -39,9 +39,10 @@ class SellerController extends Controller
         }
     
         $data['student_id'] = $student->id;
-    
+        $data['is_approved'] = false; // require admin approval before listing
+
         Product::create($data);
     
-        return redirect(route('main'));
+        return redirect(route('main'))->with('status', 'Your product has been submitted and is pending admin approval.');
     }
 }

@@ -67,6 +67,10 @@ Route::prefix('admin')->group(function (){
     Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
     Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
     Route::get('view-order', [AdminController::class, 'viewOrder'])->name('view-order');
+    Route::get('/pending', [AdminController::class, 'pending'])->name('admin.products.pending');
+    Route::post('/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
+    Route::post('/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
+
 
 
 

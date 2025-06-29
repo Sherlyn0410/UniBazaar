@@ -10,6 +10,7 @@ class MainController extends Controller
     public function viewMain()
     {
         $products = Product::all(); // Get all products from the database or any other source
+        $products = Product::where('is_approved', true)->with('student')->get();
         return view('main', compact('products'));
     }
 
@@ -19,6 +20,8 @@ class MainController extends Controller
         $query = $request->input('query');
 
     $results = Product::where('product_name', 'LIKE', "%{$query}%")->get();
+    $products = Product::where('is_approved', true)->with('student')->get();
+
 
         return view('marketplace', compact('products', 'results', 'query'));
     }
