@@ -1,6 +1,7 @@
-    <div class="container py-5">
-        <h2 class="fw-bold mb-4"> Order List (Admin)</h2>
-
+ @extends('layouts.admin-main')
+ 
+@section('content')
+    <h3 class="mb-4 fw-semibold text-dark">Order List (Admin)</h3>
         @if($orders->isEmpty())
             <div class="alert alert-info">No orders found.</div>
         @else
@@ -36,4 +37,5 @@
                 </table>
             </div>
         @endif
-    </div>
+
+@endsection
