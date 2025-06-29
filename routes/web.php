@@ -46,7 +46,7 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::post('/charge', [CheckoutController::class, 'charge'])->name('stripe.charge');
     Route::post('/checkout/pay', [CheckoutController::class, 'processCartPayment'])->name('stripe.checkout.pay');
     Route::get('/checkout', [CartController::class, 'checkoutCart'])->name('cart.checkout');
-
+    Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
 
 
 });
