@@ -9,7 +9,7 @@
         <h3 class="fw-bold mb-4">Your Privacy Matters to Us</h3>
 
         <p>
-            At <strong>CaroulSell</strong>, we are committed to protecting your privacy and ensuring a safe online shopping experience. This Privacy Policy explains how we collect, use, and protect your personal information.
+            At <strong>UNIBAZAAR</strong>, we are committed to protecting your privacy and ensuring a safe online shopping experience. This Privacy Policy explains how we collect, use, and protect your personal information.
         </p>
 
         <h5 class="fw-bold mt-4">1. What Information We Collect</h5>
