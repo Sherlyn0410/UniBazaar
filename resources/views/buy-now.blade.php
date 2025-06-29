@@ -10,103 +10,98 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <form action="{{ route('buy.now.place') }}" method="POST">
+        <form action="{{ route('buy.now.place') }}" method="POST" id="payment-form">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
-            <input type="hidden" name="max_quantity" id="max_quantity" value="{{ $product->quantity }}">
-            <div class="row">
-                <!-- Billing Info -->
-                <div class="col-md-6">
-                    <h5 class="fw-bold mb-3">Billing Info</h5>
-                    <div class="mb-3">
-                        <label>Full Name</label>
-                        <input type="text" class="form-control" value="{{ Auth::user()->name }}" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label>Address</label>
-                        <textarea name="address" class="form-control" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label>Payment Method</label>
-                        <select name="payment_method" class="form-select" required>
-                            <option value="COD">Cash on Delivery</option>
-                            <option value="Online">Online Payment</option>
-                        </select>
+            <input type="hidden" name="quantity" value="{{ request('quantity') ?? 1 }}">
+            <input type="hidden" name="total" value="{{ $product->product_price * (request('quantity') ?? 1) }}">
+
+            <div class="card shadow-sm p-4 mb-4">
+                <div class="d-flex gap-3">
+                    <img src="{{ asset($product->product_image) }}" width="100" alt="Product">
+                    <div>
+                        <h5>{{ $product->product_name }}</h5>
+                        <p>RM {{ number_format($product->product_price, 2) }}</p>
+                        <p class="text-muted">Stock: {{ $product->quantity }}</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Product Summary -->
-                <div class="col-md-6">
-                    <h5 class="fw-bold mb-3">Product Summary</h5>
-                    <div class="card shadow-sm mb-3">
-                        <div class="card-body d-flex">
-                            <img src="{{ asset($product->product_image) }}" alt="product" width="100" class="me-3">
-                            <div>
-                                <h5>{{ $product->product_name }}</h5>
-                                <p class="text-muted mb-0">RM {{ number_format($product->product_price, 2) }}</p>
-                                <p class="text-muted mb-0">Stock: {{ $product->quantity }}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Quantity Selector -->
-                    <div class="mb-3">
-                        <label for="quantity" class="form-label">Select Quantity</label>
-                        <div class="d-flex align-items-center gap-2">
-                            <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">−</button>
-                            <input type="number" name="quantity" id="quantity" class="form-control text-center" style="width: 80px;" value="{{ request('quantity') ?? 1 }}" min="1" max="{{ $product->quantity }}">
-                            <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
-                        </div>
-                        <small id="stock-warning" class="text-danger d-none">⚠️ Stock not enough</small>
-                    </div>
-
-                    <button type="submit" class="btn btn-danger mt-3 w-100" id="place-order-btn">Place Order</button>
+            <div class="mt-5">
+                <h5 class="fw-bold mb-3">Billing Address</h5>
+                <div class="border p-3 bg-light rounded">
+                    <p class="mb-0">INTI International College Penang<br>1-Z, Lebuh Bukit Jambul,<br>Bukit Jambul, 11900 Bayan Lepas,<br>Pulau Pinang</p>
                 </div>
+            </div>
+
+            <div class="mt-5">
+                <h5 class="fw-bold mb-3">Payment Method</h5>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment_method" id="pay_stripe" value="stripe" checked>
+                    <label class="form-check-label" for="pay_stripe">Pay with Card (Stripe)</label>
+                </div>
+                <div class="form-check mt-2">
+                    <input class="form-check-input" type="radio" name="payment_method" id="pay_in_person" value="pay_in_person">
+                    <label class="form-check-label" for="pay_in_person">Pay in Person</label>
+                </div>
+
+                <div id="stripe-section" class="mt-3">
+                    <label for="card-element">Card Info</label>
+                    <div id="card-element" class="form-control"></div>
+                    <div id="card-errors" class="text-danger mt-2" role="alert"></div>
+                </div>
+            </div>
+
+            <p class="mt-4 text-muted small">
+                By proceeding, you agree to our <a href="{{ route('privacy.policy') }}" target="_blank">Privacy Policy</a>.
+            </p>
+
+            <div class="text-end mt-4">
+                <button type="submit" class="btn btn-danger px-4">
+                    Pay RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}
+                </button>
             </div>
         </form>
     </div>
 
+    <script src="https://js.stripe.com/v3/"></script>
     <script>
-        const maxQuantity = parseInt(document.getElementById('max_quantity').value);
-        const quantityInput = document.getElementById('quantity');
-        const warning = document.getElementById('stock-warning');
-        const placeOrderBtn = document.getElementById('place-order-btn');
+        const stripe = Stripe('{{ config('services.stripe.key') }}');
+        const elements = stripe.elements();
+        const card = elements.create('card');
+        card.mount('#card-element');
 
-        function increaseQuantity() {
-            let val = parseInt(quantityInput.value);
-            if (val < maxQuantity) {
-                quantityInput.value = val + 1;
-                hideWarning();
-            } else {
-                showWarning();
-            }
+        const form = document.getElementById('payment-form');
+        const stripeSection = document.getElementById('stripe-section');
+        const payStripe = document.getElementById('pay_stripe');
+        const payInPerson = document.getElementById('pay_in_person');
+
+        function toggleStripe() {
+            stripeSection.style.display = payStripe.checked ? 'block' : 'none';
         }
 
-        function decreaseQuantity() {
-            let val = parseInt(quantityInput.value);
-            if (val > 1) {
-                quantityInput.value = val - 1;
-                hideWarning();
-            }
-        }
+        payStripe.addEventListener('change', toggleStripe);
+        payInPerson.addEventListener('change', toggleStripe);
+        toggleStripe();
 
-        function showWarning() {
-            warning.classList.remove('d-none');
-            placeOrderBtn.disabled = true;
-        }
-
-        function hideWarning() {
-            warning.classList.add('d-none');
-            placeOrderBtn.disabled = false;
-        }
-
-        quantityInput.addEventListener('input', function () {
-            let val = parseInt(this.value);
-            if (val > maxQuantity) {
-                showWarning();
-            } else {
-                hideWarning();
+        form.addEventListener('submit', function (e) {
+            if (payStripe.checked) {
+                e.preventDefault();
+                stripe.createToken(card).then(result => {
+                    if (result.error) {
+                        document.getElementById('card-errors').textContent = result.error.message;
+                    } else {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'stripeToken';
+                        input.value = result.token.id;
+                        form.appendChild(input);
+                        form.submit();
+                    }
+                });
             }
         });
     </script>
 </x-app-layout>
+
+
