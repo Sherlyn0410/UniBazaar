@@ -20,7 +20,7 @@ class ProfileController extends Controller
 
     $student->load(['receivedRatings.buyer']); // Load reviews with buyer details
 
-    $products = Product::all();
+    $products = Product::where('student_id', Auth::id())->with('student')->get();
     $orders = Order::with(['buyer', 'product'])
     ->where('buyer_id', auth()->id()) // ✅ Only orders for logged-in user
     ->latest()

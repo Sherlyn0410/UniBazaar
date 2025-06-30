@@ -23,22 +23,40 @@ class AdminController extends Controller
         return view('admin');
     }
 
-       public function viewProduct(){
-        $products = Product::with('student')->get();
-        return view('view-product',['products' => $products]);
-       }
+       public function viewProduct()
+{
+    // Auto-update stock status
+    $allProducts = Product::with('student')->get();
+
+    foreach ($allProducts as $product) {
+        if ($product->quantity <= 0 && $product->status !== 'out_of_stock') {
+            $product->status = 'out_of_stock';
+            $product->save();
+        } elseif ($product->quantity > 0 && $product->status === 'out_of_stock') {
+            $product->status = 'live'; // Optional: revert if restocked
+            $product->save();
+        }
+    }
+
+    // Separate into approved and pending
+    $pendingProducts = $allProducts->where('is_approved', 0);
+    $approvedProducts = $allProducts->where('is_approved', 1);
+
+    return view('view-product', compact('pendingProducts', 'approvedProducts'));
+}
+
 
        public function viewOrder(){
         $orders = Order::with(['buyer', 'product'])->latest()->get();
         return view('view-order', compact('orders'));
     }
 
-public function pending()
-{
-    // Show only products with status 'pending'
-    $products = Product::where('status', 'pending')->with('student')->get();
-    return view('pending', compact('products'));
-}
+// public function pending()
+// {
+//     // Show only products with status 'pending'
+//     $products = Product::where('status', 'pending')->with('student')->get();
+//     return view('pending', compact('products'));
+// }
 
 public function approve(Product $product)
 {
@@ -51,7 +69,6 @@ public function approve(Product $product)
 
     Mail::to($product->student->email)->send(new ProductApproved($product));
 
-    return back()->with('success', 'Product approved and email sent.');
 
     return back()->with('success', 'Product approved and email sent.');
 }
