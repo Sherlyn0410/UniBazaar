@@ -16,16 +16,24 @@
             <input type="hidden" name="quantity" value="{{ request('quantity') ?? 1 }}">
             <input type="hidden" name="total" value="{{ $product->product_price * (request('quantity') ?? 1) }}">
 
-            <div class="card shadow-sm p-4 mb-4">
-                <div class="d-flex gap-3">
-                    <img src="{{ asset($product->product_image) }}" width="100" alt="Product">
-                    <div>
-                        <h5>{{ $product->product_name }}</h5>
-                        <p>RM {{ number_format($product->product_price, 2) }}</p>
-                        <p class="text-muted">Stock: {{ $product->quantity }}</p>
-                    </div>
-                </div>
-            </div>
+           <div class="card shadow-sm p-4 mb-4">
+    <h5 class="fw-bold mb-3">🧾 Order Summary</h5>
+
+    <div class="d-flex gap-3 align-items-start">
+        <img src="{{ asset($product->product_image) }}" width="100" class="rounded border" alt="Product Image">
+
+        <div class="flex-grow-1">
+            <h5 class="mb-1">{{ $product->product_name }}</h5>
+            <p class="mb-1 text-muted">Price per unit: RM {{ number_format($product->product_price, 2) }}</p>
+            <p class="mb-1 text-muted">Quantity: {{ request('quantity') ?? 1 }}</p>
+            <hr>
+            <p class="fw-bold fs-5 mb-0">
+                Total: RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}
+            </p>
+        </div>
+    </div>
+</div>
+
 
             <div class="mt-5">
                 <h5 class="fw-bold mb-3">Billing Address</h5>
