@@ -1,4 +1,4 @@
-<h3 class="mb-4">Ratings for {{ $student->name }}</h3>
+<h5 class="mb-4">Ratings for {{ $student->name }}</h5>
 
 @if ($student->receivedRatings->isEmpty())
     <div class="alert alert-info">This seller has no ratings yet.</div>
