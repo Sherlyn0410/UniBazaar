@@ -88,48 +88,86 @@ public function charge(Request $request)
     Stripe::setApiKey(config('services.stripe.secret'));
 
     try {
-        $charge = Charge::create([
-            'amount' => $request->total * 100,
-            'currency' => 'myr',
-            'source' => $request->stripeToken,
-            'description' => 'Cart Payment by User ID: ' . auth()->id(),
-        ]);
+        $description = 'Purchase by User ID: ' . auth()->id();
+        $orderItems = [];
 
-        foreach ($request->cart_items as $itemId => $data) {
-    $product = Product::find($data['product_id']);
-    if (!$product) continue;
+        // Detect Buy Now or Cart
+        if ($request->has('product_id')) {
+            // 🛒 Buy Now
+            $product = Product::findOrFail($request->product_id);
+            $quantity = (int) $request->quantity;
+            $total = $product->product_price * $quantity;
 
-    // ✅ Save order and store in variable
-    $order = Order::create([
-        'buyer_id' => auth()->id(),
-        'product_id' => $data['product_id'],
-        'quantity' => $data['quantity'],
-        'ordered_at' => now(),
-        'payment_method' => 'Stripe',
-        'stripe_payment_id' => $charge->id,
-        'is_paid' => true,
-    ]);
+            $charge = \Stripe\Charge::create([
+                'amount' => $total * 100,
+                'currency' => 'myr',
+                'source' => $request->stripeToken,
+                'description' => 'Buy Now: ' . $product->product_name,
+            ]);
 
+            // Create order
+            $order = Order::create([
+                'buyer_id' => auth()->id(),
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+                'ordered_at' => now(),
+                'payment_method' => 'Stripe',
+                'stripe_payment_id' => $charge->id,
+                'is_paid' => true,
+            ]);
 
-    // ✅ Update product stock
-    $product->quantity -= $data['quantity'];
-    $product->save();
+            // Reduce stock
+            $product->quantity -= $quantity;
+            $product->save();
 
-    // ✅ Remove from cart
-    Cart::destroy($itemId);
-}
+            $orderItems[] = $order;
+        } else {
+            // 🛒 Cart Payment
+            $charge = \Stripe\Charge::create([
+                'amount' => $request->total * 100,
+                'currency' => 'myr',
+                'source' => $request->stripeToken,
+                'description' => $description,
+            ]);
 
-    // ✅ Send confirmation email
-    $order->load('buyer', 'product');
-   try {
-    Mail::to(auth()->user()->email)->send(new OrderConfirmation($order));
-} catch (\Exception $e) {
-    dd("Email failed: " . $e->getMessage());
-}
-return redirect()->route('rate.seller.prompt', $order->id);
+            foreach ($request->cart_items as $itemId => $data) {
+                $product = Product::find($data['product_id']);
+                if (!$product) continue;
+
+                $order = Order::create([
+                    'buyer_id' => auth()->id(),
+                    'product_id' => $data['product_id'],
+                    'quantity' => $data['quantity'],
+                    'ordered_at' => now(),
+                    'payment_method' => 'Stripe',
+                    'stripe_payment_id' => $charge->id,
+                    'is_paid' => true,
+                ]);
+
+                $product->quantity -= $data['quantity'];
+                $product->save();
+
+                Cart::destroy($itemId);
+                $orderItems[] = $order;
+            }
+        }
+
+        // Send email for the latest order
+        if (!empty($orderItems)) {
+            $latestOrder = end($orderItems);
+            $latestOrder->load('buyer', 'product');
+
+            Mail::to(auth()->user()->email)->send(new \App\Mail\OrderConfirmation($latestOrder));
+
+            // Prompt rating for last seller
+            return redirect()->route('rate.seller.prompt', $latestOrder->id);
+        }
+
+        return redirect()->route('marketplace')->with('success', 'Payment successful and order(s) placed!');
     } catch (\Exception $e) {
         return back()->with('error', $e->getMessage());
     }
+
 }
 }
 
