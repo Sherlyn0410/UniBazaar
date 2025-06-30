@@ -91,13 +91,13 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'students',
-            'table' => 'password_reset_tokens',
-            'expire' => 60,
-            'throttle' => 60,
-        ],
+    'students' => [
+        'provider' => 'students', // this must match the provider name above
+        'table' => 'password_reset_tokens', // or 'password_resets' for older Laravel
+        'expire' => 60,
+        'throttle' => 60,
     ],
+],
 
     /*
     |--------------------------------------------------------------------------
