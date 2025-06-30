@@ -30,6 +30,8 @@ class ProfileController extends Controller
     // Total products sold (sum of quantities in paid orders)
     $totalSold = Order::where('is_paid', true)->sum('quantity');
 
+    
+
 
 
 

@@ -33,32 +33,39 @@ class AdminController extends Controller
         return view('view-order', compact('orders'));
     }
 
-        public function pending()
-    {
-        $products = Product::where('is_approved', false)->with('student')->get();
-        return view('pending', compact('products'));
-    }
+public function pending()
+{
+    // Show only products with status 'pending'
+    $products = Product::where('status', 'pending')->with('student')->get();
+    return view('pending', compact('products'));
+}
 
-        public function approve(Product $product)
-        {
+public function approve(Product $product)
+{
+   $status = $product->quantity > 0 ? 'live' : 'out_of_stock';
 
-           $product->update(['is_approved' => true]);
+    $product->update([
+        'is_approved' => true,
+        'status' => $status,
+    ]);
 
-            Mail::to($product->student->email)->send(new ProductApproved($product));
+    Mail::to($product->student->email)->send(new ProductApproved($product));
 
-            return back()->with('success', 'Product approved and email sent.');
-        }
+    return back()->with('success', 'Product approved and email sent.');
 
-        public function reject(Product $product)
-        {
-                $product->update(['is_approved' => false]); // or delete if you prefer
+    return back()->with('success', 'Product approved and email sent.');
+}
 
-                Mail::to($product->student->email)->send(new ProductRejected($product));
-                    $product->delete();
+public function reject(Product $product)
+{
+    // Send rejection email before deleting
+    Mail::to($product->student->email)->send(new ProductRejected($product));
 
+    // Delete the product entirely
+    $product->delete();
 
-                return back()->with('success', 'Product rejected and email sent.');
-        }
+    return back()->with('success', 'Product rejected, deleted and email sent.');
+}
     }
 
 
