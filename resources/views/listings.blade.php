@@ -14,6 +14,8 @@
                                 <div class="card-body">
                                     <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
                                     <h6 class="card-text">RM{{ $product->product_price }}</h6>
+                                     <h6 class="card-text">{{ $product->status }}</h6>
+
                                     <p class="text-truncate">
                                         <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
                                         {{ $product->student->name }}
