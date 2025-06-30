@@ -39,7 +39,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('view.order') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ request()->routeIs('view-order') ? 'active' : '' }}">
+                        <a href="{{ route('view.order') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ request()->routeIs('view.order') ? 'active' : '' }}">
                             <i class="bi bi-bag me-2 fs-4" aria-hidden="true"></i>
                             Orders
                         </a>
@@ -55,9 +55,6 @@
                         <strong>Admin</strong>
                     </a>
                     <ul class="dropdown-menu text-small shadow">
-                        <li>
-                            <a class="dropdown-item" href="#">New project...</a>
-                        </li>
                         <li>
                             <a class="dropdown-item" href="#">Settings</a>
                         </li>
