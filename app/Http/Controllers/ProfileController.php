@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use App\Models\Student;
 use App\Models\Product;
 use App\Models\Order;
@@ -20,7 +21,19 @@ class ProfileController extends Controller
         $products = Product::all(); // Get all products from the database or any other source
         $orders = Order::with(['buyer', 'product'])->latest()->get();
 
-        return view('profile', compact('student', 'products', 'orders'));
+
+  $totalMoney = Order::where('is_paid', true)
+                    ->join('products', 'orders.product_id', '=', 'products.id')
+                    ->select(DB::raw('SUM(orders.quantity * products.product_price) as total'))
+                    ->value('total');
+
+    // Total products sold (sum of quantities in paid orders)
+    $totalSold = Order::where('is_paid', true)->sum('quantity');
+
+
+
+
+        return view('profile', compact('student', 'products', 'orders', 'totalMoney', 'totalSold'));
     }
 
     public function update(Student $student, Request $request)
