@@ -47,7 +47,7 @@
                         <div class="">
                             <img src="{{asset('assets/img/sta.jpg')}}" alt="Category 7" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         </div>
-                        <div class="mt-2">Stationeries</div>
+                        <div class="mt-2">Stationeriess</div>
                     </div>
                 </div>
             </div>
