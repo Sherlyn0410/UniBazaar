@@ -33,6 +33,7 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
  Route::prefix('user')->group(function(){
 
     Route::get('marketplace', [MainController::class, 'viewMarketplace'])->name('marketplace');
+    Route::get('/category/{category}', [MainController::class, 'filterByCategory'])->name('category.filter');
     Route::get('/product/{id}', [MainController::class, 'viewProductDetails'])->name('product.show');
     Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/checkout', [CheckoutController::class, 'show'])->name('checkout');
