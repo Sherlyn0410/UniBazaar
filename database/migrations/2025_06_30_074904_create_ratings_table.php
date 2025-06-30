@@ -9,20 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-   public function up()
+    public function up()
 {
     Schema::create('ratings', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('order_id')->constrained()->onDelete('cascade'); // Link to specific order
-        $table->foreignId('product_id')->constrained()->onDelete('cascade');
-        $table->foreignId('buyer_id')->constrained('users')->onDelete('cascade'); // or 'students' if applicable
-        $table->tinyInteger('rating')->comment('1 to 5'); // rating value
-        $table->text('review')->nullable(); // optional review
+        $table->foreignId('seller_id')->constrained('students')->onDelete('cascade');
+        $table->foreignId('buyer_id')->constrained('students')->onDelete('cascade');
+        $table->foreignId('order_id')->constrained()->onDelete('cascade');
+        $table->tinyInteger('rating'); // 1 to 5
+        $table->text('review')->nullable();
         $table->timestamps();
     });
 }
-
-
     /**
      * Reverse the migrations.
      */

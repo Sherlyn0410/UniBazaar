@@ -32,9 +32,17 @@
                             ->exists();
                     @endphp
 
-                    <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-start gap-3 flex-column">
-                        @csrf
-                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+            <form action="{{ route('cart.add') }}" method="POST" class="ms-4 d-flex align-items-start gap-3 flex-column">
+                    @csrf
+                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                    @php
+                        $isSeller = Auth::id() === $product->student_id;
+                    @endphp
+
+                    @if ($isSeller)
+                        <div class="alert alert-warning">You cannot buy your own product.</div>
+                    @else
                         <div class="d-flex align-items-center gap-3">
                             <div class="d-flex align-items-center gap-2">
                                 <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">−</button>
@@ -44,26 +52,64 @@
                             <small class="text-muted">Available stock: {{ $product->quantity }}</small>
                             <small id="stock-warning" class="text-danger d-none">⚠️ Stock not enough</small>
                         </div>
+
                         <div>
                             @if($inCart)
-                            <x-red-outline-button class="me-3" type="button" onclick="window.location='{{ route('cart.index') }}'">
-                                <i class="bi bi-cart-check me-2"></i>
-                                {{ __('Added to Cart') }}
-                            </x-red-outline-button>
+                                <x-red-outline-button class="me-3" type="button" onclick="window.location='{{ route('cart.index') }}'">
+                                    <i class="bi bi-cart-check me-2"></i>
+                                    {{ __('Added to Cart') }}
+                                </x-red-outline-button>
                             @else
-                            <x-red-outline-button class="me-3" type="submit">
-                                <i class="bi bi-cart-plus me-2"></i>
-                                {{ __('Add to Cart') }}
-                            </x-red-outline-button>
+                                <x-red-outline-button class="me-3" type="submit">
+                                    <i class="bi bi-cart-plus me-2"></i>
+                                    {{ __('Add to Cart') }}
+                                </x-red-outline-button>
                             @endif
+
                             <x-red-button type="button" id="buy-now-btn" onclick="handleBuyNow({{ $product->id }})">
                                 <i class="bi bi-bag-check me-2"></i> Buy Now
                             </x-red-button>
                         </div>
-                    </form>
+                    @endif
+            </form>
+
                 </div>
             </div>
+            
         </div>
+        <div class="mt-5 ms-3">
+    <h5 class="fw-semibold mb-3">⭐ Seller Ratings & Reviews</h5>
+
+    @php
+        $ratings = $product->student->receivedRatings;
+        $average = $ratings->avg('rating');
+    @endphp
+
+    @if ($ratings->isEmpty())
+        <p class="text-muted">This seller has not received any reviews yet.</p>
+    @else
+        <div class="mb-3">
+            <h6 class="mb-1 fw-bold">Average Rating: {{ number_format($average, 1) }} / 5</h6>
+            <small class="text-muted">{{ $ratings->count() }} reviews total</small>
+        </div>
+
+        @foreach ($ratings as $rating)
+            <div class="border rounded p-3 mb-3 bg-light">
+                <div class="d-flex justify-content-between">
+                    <strong>{{ $rating->buyer->name ?? 'Anonymous' }}</strong>
+                    <small class="text-muted">{{ \Carbon\Carbon::parse($rating->created_at)->format('d M Y') }}</small>
+                </div>
+                <div class="mb-1">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <i class="bi bi-star{{ $i <= $rating->rating ? '-fill text-warning' : '' }}"></i>
+                    @endfor
+                </div>
+                <p class="mb-0">{{ $rating->review }}</p>
+            </div>
+        @endforeach
+    @endif
+</div>
+
     </div>
 </x-app-layout>
 

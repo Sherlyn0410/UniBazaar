@@ -26,7 +26,7 @@
             <span class="visually-hidden">Next</span>
         </button>
     </div>
-    <div class="bg-white">
+       <div class="bg-white">
         <div class="container py-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h3 class="text-left">From Your Campus Mates</h3>
@@ -42,7 +42,13 @@
                                     <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
                                     <h6 class="card-text">RM{{ $product->product_price }}</h6>
                                     <p class="text-truncate">
-                                        <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
+                                        @php
+                                            $ratings = $product->student->receivedRatings;
+                                            $average = $ratings->avg('rating');
+                                        @endphp
+                                        <span class="badge rounded-pill text-bg-warning text-white">
+                                            {{ number_format($average ?? 0, 1) }}<i class="bi bi-star-fill ms-1"></i>
+                                        </span>
                                         {{ $product->student->name }}
                                     </p>
                                 </div>
@@ -73,7 +79,13 @@
                                     <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
                                     <h6 class="card-text">RM{{ $product->product_price }}</h6>
                                     <p class="text-truncate">
-                                        <span class="badge rounded-pill text-bg-warning text-white">4.7<i class="bi bi-star-fill ms-1"></i></span>
+                                        @php
+                                            $ratings = $product->student->receivedRatings;
+                                            $average = $ratings->avg('rating');
+                                        @endphp
+                                        <span class="badge rounded-pill text-bg-warning text-white">
+                                            {{ number_format($average ?? 0, 1) }}<i class="bi bi-star-fill ms-1"></i>
+                                        </span>
                                         {{ $product->student->name }}
                                     </p>
                                 </div>
@@ -88,6 +100,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script>

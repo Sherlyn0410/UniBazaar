@@ -126,7 +126,7 @@ public function charge(Request $request)
 } catch (\Exception $e) {
     dd("Email failed: " . $e->getMessage());
 }
-        return redirect()->route('marketplace')->with('success', 'Payment complete and order placed!');
+return redirect()->route('rate.seller.prompt', $order->id);
     } catch (\Exception $e) {
         return back()->with('error', $e->getMessage());
     }

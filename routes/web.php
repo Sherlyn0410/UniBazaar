@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Product;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RatingController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
@@ -40,6 +41,7 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::delete('/cart/{id}/remove', [CartController::class, 'removeFromCart'])->name('cart.remove')->middleware('auth');
     Route::get('/profile', [ProfileController::class, 'viewProfile'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('/profile/{sellerId}', [ProfileController::class, 'viewProfilee'])->name('seller.profile');
     Route::get('/{product}/product-edit', [ProfileController::class, 'editProduct'])->name('edit.product');
     Route::put('/{product}/product-edit', [ProfileController::class, 'updateProduct'])->name('update.product');
     Route::get('/search', [MainController::class, 'search'])->name('search');
@@ -51,8 +53,10 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::get('/privacy-policy', function () {
     return view('privacy');
 })->name('privacy.policy');
-Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('products.review');
-    Route::post('/review', [RatingController::class, 'storeRating'])->name('ratings.store');
+Route::get('/rate/seller/{order}', [RatingController::class, 'showPrompt'])->name('rate.seller.prompt');
+Route::get('/{order}/form', [RatingController::class, 'create'])->name('rate.seller.form');
+Route::post('/{order}', [RatingController::class, 'store'])->name('rate.seller.store');
+
 
 
 

@@ -14,29 +14,24 @@ use App\Models\Order;
 
 class ProfileController extends Controller
 {
-    public function viewProfile()
-    {
-        // Retrieve the currently authenticated student
-        $student = Auth::guard('web')->user(); // 'web' guard uses 'students' provider if set in config/auth.php
-        $products = Product::all(); // Get all products from the database or any other source
-        $orders = Order::with(['buyer', 'product'])->latest()->get();
+   public function viewProfile()
+{
+    $student = Auth::guard('web')->user();
 
+    $student->load(['receivedRatings.buyer']); // Load reviews with buyer details
 
-  $totalMoney = Order::where('is_paid', true)
-                    ->join('products', 'orders.product_id', '=', 'products.id')
-                    ->select(DB::raw('SUM(orders.quantity * products.product_price) as total'))
-                    ->value('total');
+    $products = Product::all();
+    $orders = Order::with(['buyer', 'product'])->latest()->get();
 
-    // Total products sold (sum of quantities in paid orders)
+    $totalMoney = Order::where('is_paid', true)
+        ->join('products', 'orders.product_id', '=', 'products.id')
+        ->select(DB::raw('SUM(orders.quantity * products.product_price) as total'))
+        ->value('total');
+
     $totalSold = Order::where('is_paid', true)->sum('quantity');
 
-    
-
-
-
-
-        return view('profile', compact('student', 'products', 'orders', 'totalMoney', 'totalSold'));
-    }
+    return view('profile', compact('student', 'products', 'orders', 'totalMoney', 'totalSold'));
+}
 
     public function update(Student $student, Request $request)
     {
