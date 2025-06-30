@@ -40,6 +40,7 @@ class SellerController extends Controller
     
         $data['student_id'] = $student->id;
         $data['is_approved'] = false; // require admin approval before listing
+        $data['status'] = 'pending'; 
 
         Product::create($data);
     

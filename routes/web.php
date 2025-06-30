@@ -52,6 +52,8 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     return view('privacy');
 })->name('privacy.policy');
 Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('products.review');
+    Route::post('/review', [RatingController::class, 'storeRating'])->name('ratings.store');
+
 
 
 

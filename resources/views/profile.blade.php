@@ -97,7 +97,7 @@
                 <!-- Other Tab Sections -->
                 <div id="listings-section" class="content-section" style="display: none;">@include('listings')</div>
                 <div id="insights-section" class="content-section" style="display: none;">@include('insights')</div>
-                <div id="reviews-section" class="content-section" style="display: none;">@include('reviews')</div>
+                <div id="reviews-section" class="content-section" style="display: none;">@include('rating')</div>
                 <div id="orders-section" class="content-section" style="display: none;">@include('orders')</div>
             </div>
         </div>

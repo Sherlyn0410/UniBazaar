@@ -17,7 +17,8 @@ class Product extends Model
         'product_details',
         'product_image',
         'student_id',
-        'is_approved'
+        'is_approved',
+        'status'
         ];
         
  public function student()
@@ -28,5 +29,7 @@ public function orders()
 {
     return $this->hasMany(Order::class);
 }
+
+
 
 }
