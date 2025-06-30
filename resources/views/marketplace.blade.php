@@ -1,57 +1,71 @@
 <x-app-layout>
-    <div class="bg-white">
-        <div class="container py-4">
-            <div class="mb-4">
-                <h3 class="text-left">Category</h3>
-            </div>
-            <div class="overflow-auto">
-                <div class="d-flex flex-row">
-                    <!-- Categories -->
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{ asset('assets/img/laptop.jpg') }}" alt="Category 1" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
+   <div class="bg-white">
+    <div class="container py-4">
+        <div class="mb-4">
+            <h3 class="text-left">Category</h3>
+        </div>
+        <div class="overflow-auto">
+            <div class="d-flex flex-row">
+                <!-- Laptops & Notebooks -->
+                <a href="{{ route('category.filter', ['category' => 'laptop']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/laptop.jpg') }}" alt="Laptops" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         <div class="mt-2">Laptops & Notebooks</div>
                     </div>
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{asset('assets/img/accessory.jpeg')}}" alt="Category 2" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
+                </a>
+
+                <!-- Accessories -->
+                <a href="{{ route('category.filter', ['category' => 'accessories']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/accessory.jpeg') }}" alt="Accessories" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         <div class="mt-2">Accessories</div>
                     </div>
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{asset('assets/img/tablet.jpg')}}" alt="Category 3" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
+                </a>
+
+                <!-- Tablets -->
+                <a href="{{ route('category.filter', ['category' => 'tablets']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/tablet.jpg') }}" alt="Tablets" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         <div class="mt-2">Tablets</div>
                     </div>
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{asset('assets/img/mobile.jpg')}}" alt="Category 4" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
+                </a>
+
+                <!-- Mobile Phones -->
+                <a href="{{ route('category.filter', ['category' => 'mobile-phone']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/mobile.jpg') }}" alt="Mobile Phones" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         <div class="mt-2">Mobile Phones</div>
                     </div>
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{asset('assets/img/video.jpg')}}" alt="Category 6" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
+                </a>
+
+                <!-- Video Game Consoles -->
+                <a href="{{ route('category.filter', ['category' => 'video-game']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/video.jpg') }}" alt="Video Games" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         <div class="mt-2">Video Game Consoles</div>
                     </div>
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{asset('assets/img/study.jpg')}}" alt="Category 5" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
+                </a>
+
+                <!-- Study Materials -->
+                <a href="{{ route('category.filter', ['category' => 'study-material']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/study.jpg') }}" alt="Study Materials" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
                         <div class="mt-2">Study Materials</div>
                     </div>
-                    <div class="text-center me-5">
-                        <div class="">
-                            <img src="{{asset('assets/img/sta.jpg')}}" alt="Category 7" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
-                        </div>
-                        <div class="mt-2">Stationeriess</div>
+                </a>
+
+                <!-- Stationeries -->
+                <a href="{{ route('category.filter', ['category' => 'stationeries']) }}" class="text-decoration-none text-dark text-center me-5">
+                    <div>
+                        <img src="{{ asset('assets/img/sta.jpg') }}" alt="Stationeries" class="rounded-circle object-fit-cover border border-1" style="width: 150px; height: 150px;">
+                        <div class="mt-2">Stationeries</div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
+    </div>
+</div>
+
 
         @if(request()->has('query') && !empty($query))
         <div class="container py-4">

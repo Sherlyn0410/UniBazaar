@@ -15,22 +15,45 @@ class MainController extends Controller
         ->latest()
         ->get();
 
+ 
     return view('main', compact('products'));
 }
 
 
-    public function viewMarketplace(Request $request)
-    {
-        $products = Product::all(); // Get all products from the database or any other source
-        $query = $request->input('query');
+   public function viewMarketplace(Request $request)
+{
+    $query = $request->input('query');
 
-    $results = Product::where('product_name', 'LIKE', "%{$query}%")->get();
-$products = Product::where('status', 'live')
-                       ->where('quantity', '>', 0)
-                       ->get();
-
-        return view('marketplace', compact('products', 'results', 'query'));
+    $results = collect(); // default empty if no query
+    if ($query) {
+        $results = Product::where('product_name', 'LIKE', "%{$query}%")
+            ->where('status', 'live')
+            ->where('quantity', '>', 0)
+            ->where('is_approved', 1)
+            ->get();
     }
+
+    $products = Product::where('status', 'live')
+        ->where('quantity', '>', 0)
+        ->where('is_approved', 1)
+        ->get();
+
+    return view('marketplace', compact('products', 'results', 'query'));
+}
+
+public function filterByCategory($category)
+{
+    $products = Product::where('category', $category)
+        ->where('is_approved', 1)
+        ->where('quantity', '>', 0)
+        ->get();
+
+    return view('marketplace', [
+        'products' => $products,
+        'results' => collect(),  // empty search results
+        'query' => null           // no search
+    ]);
+}
 
     public function viewProductDetails($id)
     {

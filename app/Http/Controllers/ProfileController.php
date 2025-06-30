@@ -21,8 +21,10 @@ class ProfileController extends Controller
     $student->load(['receivedRatings.buyer']); // Load reviews with buyer details
 
     $products = Product::all();
-    $orders = Order::with(['buyer', 'product'])->latest()->get();
-
+    $orders = Order::with(['buyer', 'product'])
+    ->where('buyer_id', auth()->id()) // ✅ Only orders for logged-in user
+    ->latest()
+    ->get();
     $totalMoney = Order::where('is_paid', true)
         ->join('products', 'orders.product_id', '=', 'products.id')
         ->select(DB::raw('SUM(orders.quantity * products.product_price) as total'))
