@@ -23,6 +23,8 @@ class CartController extends Controller
     // Add item to cart
     public function addToCart(Request $request)
     {
+
+        
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity'   => 'required|integer|min:1'
@@ -31,6 +33,10 @@ class CartController extends Controller
         $product = Product::findOrFail($request->product_id);
         $requestedQuantity = (int) $request->quantity;
 
+
+        if ($product->student_id == auth()->id()) {
+        return back()->with('error', 'You cannot purchase your own product.');
+        }
         if ($requestedQuantity > $product->quantity) {
             return back()->with('error', 'Requested quantity exceeds available stock.');
         }

@@ -1,18 +1,17 @@
-{{-- <form method="POST" action="{{ route('ratings.store') }}">
-    @csrf
-    <input type="hidden" name="product_id" value="{{ $product->id }}">
-    <input type="hidden" name="order_id" value="{{ $orderId }}"> <!-- Optional: link to order -->
-    <div class="mb-2">
-        <label>Rating (1 to 5):</label>
-        <select name="rating" class="form-select" required>
-            @for ($i = 1; $i <= 5; $i++)
-                <option value="{{ $i }}">{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
-            @endfor
-        </select>
-    </div>
-    <div class="mb-2">
-        <label>Your Review:</label>
-        <textarea name="review" class="form-control" rows="3"></textarea>
-    </div>
-    <button class="btn btn-primary">Submit Review</button>
-</form> --}}
+<h3 class="mb-4">Ratings for {{ $student->name }}</h3>
+
+@if ($student->receivedRatings->isEmpty())
+    <div class="alert alert-info">This seller has no ratings yet.</div>
+@else
+    @foreach ($student->receivedRatings as $rating)
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>
+                    ⭐ {{ $rating->rating }}/5
+                    <small class="text-muted">from {{ $rating->buyer->name ?? 'Anonymous' }}</small>
+                </h5>
+                <p class="mb-0">{{ $rating->review }}</p>
+            </div>
+        </div>
+    @endforeach
+@endif

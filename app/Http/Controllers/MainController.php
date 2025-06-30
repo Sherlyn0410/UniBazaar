@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 
 class MainController extends Controller
 {
-    public function viewMain()
-    {
-        $products = Product::all(); // Get all products from the database or any other source
- $products = Product::where('status', 'live')
-                       ->where('quantity', '>', 0)
-                       ->get();        return view('main', compact('products'));
-    }
+   public function viewMain()
+{
+    $products = Product::with('student.receivedRatings') // eager load seller ratings
+        ->where('status', 'live')
+        ->where('quantity', '>', 0)
+        ->latest()
+        ->get();
+
+    return view('main', compact('products'));
+}
+
 
     public function viewMarketplace(Request $request)
     {

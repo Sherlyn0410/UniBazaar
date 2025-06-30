@@ -29,4 +29,20 @@ public function orders()
 {
     return $this->hasMany(Order::class, 'buyer_id');
 }
+
+public function receivedRatings()
+{
+    return $this->hasMany(Rating::class, 'seller_id');
+}
+
+public function givenRatings()
+{
+    return $this->hasMany(Rating::class, 'buyer_id');
+}
+
+public function buyer()
+{
+    return $this->belongsTo(Student::class, 'buyer_id');
+}
+
 }
