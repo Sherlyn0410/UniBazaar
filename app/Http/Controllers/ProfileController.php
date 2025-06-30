@@ -20,7 +20,7 @@ class ProfileController extends Controller
 
     $student->load(['receivedRatings.buyer']); // Load reviews with buyer details
 
-    $products = Product::where('student_id', Auth::id())->with('student')->get();
+    $products = Product::where('student_id', Auth::id())->with('student')->get();//Only display logged in user
     $orders = Order::with(['buyer', 'product'])
     ->where('buyer_id', auth()->id()) // ✅ Only orders for logged-in user
     ->latest()
@@ -82,19 +82,23 @@ public function updateProduct(Request $request, Product $product)
     ]);
 
     if ($request->hasFile('product_image')) {
-        if ($product->product_image && Storage::exists('public/product_images/' . $product->product_image)) {
-            Storage::delete('public/product_images/' . $product->product_image);
+        // Delete old image if exists
+        if ($product->product_image && Storage::exists('public/assets/img/' . $product->product_image)) {
+            Storage::delete('public/assets/img/' . $product->product_image);
         }
 
+        // Store new image
         $imageName = time() . '.' . $request->file('product_image')->extension();
-        $request->file('product_image')->storeAs('public/product_images', $imageName);
+        $request->file('product_image')->storeAs('public/assets/img', $imageName);
         $product->product_image = $imageName;
     }
 
+    // Update product info
     $product->update([
         'product_name' => $data['product_name'],
         'product_price' => $data['product_price'],
         'quantity' => $data['quantity'],
+        'product_image' => $product->product_image, // Add this to save new image if any
     ]);
 
     return redirect()->route('profile')->with('status', 'Product updated successfully!');
