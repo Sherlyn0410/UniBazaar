@@ -10,7 +10,7 @@
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
 
-        <form action="{{ route('buy.now.place') }}" method="POST" id="payment-form">
+        <form action="{{ route('stripe.checkout.pay') }}" method="POST" id="payment-form">
             @csrf
             <input type="hidden" name="product_id" value="{{ $product->id }}">
             <input type="hidden" name="quantity" value="{{ request('quantity') ?? 1 }}">
