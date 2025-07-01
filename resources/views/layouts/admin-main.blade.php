@@ -44,6 +44,12 @@
                             Orders
                         </a>
                     </li>
+                     <li class="nav-item">
+                        <a href="{{ route('admin.reports') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
+                            <i class="bi bi-bag me-2 fs-4" aria-hidden="true"></i>
+                            Report
+                        </a>
+                    </li>
                 </ul>
             </div>
             <div class="mt-auto">

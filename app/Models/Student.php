@@ -18,7 +18,8 @@ class Student extends Authenticatable
         'email',
         'password',
         'contact',
-        'is_admin'
+        'is_admin',
+        'profile_image',
     ];
 
     public function products()
