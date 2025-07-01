@@ -24,7 +24,7 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>
                                     <strong>{{ $order->product->product_name }}</strong><br>
-                                    <img src="{{ asset($order->product->product_image) }}" alt="product" width="60">
+                                    {{-- <img src="{{ asset($order->product->product_image) }}" alt="product" width="60"> --}}
                                 </td>
                                 <td>{{ $order->buyer->name }}</td>
                                 <td>{{ $order->product->student->name }}</td>
