@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Content;
 use App\Mail\ProductApproved;
 use App\Mail\ProductRejected;
+use App\Mail\StudentBanned;
 use App\Models\Student;
 use App\Models\Product;
 use App\Models\Order;
@@ -22,6 +25,46 @@ class AdminController extends Controller
     public function viewAdmin(){
         return view('admin');
     }
+
+    public function editStudent($id)
+    {
+        $student = Student::findOrFail($id);
+        return view('admin-edit-student ', compact('student'));
+    }
+
+    public function updateStudent(Request $request, $id)
+    {
+        $student = Student::findOrFail($id);
+
+        $data = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|max:255',
+            'contact'  => 'nullable|string|max:20',
+        ]);
+
+            $student->name = $data['name'];
+            $student->email = $data['email'];
+            $student->contact = $data['contact'] ?? $student->contact;
+
+          
+
+            $student->save();
+
+            return redirect()->route('view.student')->with('success', 'Student updated successfully.');
+            }
+
+ public function deleteStudent($id)
+{
+    $student = Student::findOrFail($id);
+
+    // Send the email before deleting
+    Mail::to($student->email)->send(new StudentBanned($student));
+
+    // Delete the student
+    $student->delete();
+
+    return redirect()->route('admin.view.student')->with('status', 'Student deleted and email notification sent.');
+}
 
        public function viewProduct()
 {
