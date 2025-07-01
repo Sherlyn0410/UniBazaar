@@ -23,6 +23,11 @@ public function create(Order $order)
 
 public function store(Request $request, Order $order)
 {
+
+    if (Rating::where('order_id', $order->id)->exists()) {
+    return back()->with('error', 'You have already rated this seller for this order.');
+}
+
     $request->validate([
         'rating' => 'required|integer|min:1|max:5',
         'review' => 'nullable|string',

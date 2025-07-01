@@ -1,4 +1,23 @@
 <x-app-layout>
+
+   @if(session('success'))
+    <div id="success-alert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i>
+        {{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+        <script>
+        setTimeout(function () {
+            const alert = document.getElementById('success-alert');
+            if (alert) {
+                alert.classList.remove('show');
+                alert.classList.add('fade');
+                setTimeout(() => alert.remove(), 300); // fully remove after fade
+            }
+        }, 5000); // 5 seconds
+    </script>
+    @endif
+
    <div class="bg-white">
     <div class="container py-4">
         <div class="mb-4">
@@ -77,7 +96,7 @@
                     <div class="col-12 col-sm-6 col-md-4 col-lg-2">
                         <a href="{{ route('product.show', $product->id) }}" class="text-decoration-none text-dark">
                             <div>
-                                <img src="{{ asset('/assets/img/' . $product->product_image) }}"" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px; width: 100%; object-fit: cover;" />
+                                <img src="{{ asset('/assets/img/' . $product->product_image) }}" class="card-img-top object-fit-cover border rounded mb-1" alt="{{ $product->product_name }}" style="height: 200px; width: 100%; object-fit: cover;" />
                                 <div class="card-body">
                                     <h5 class="card-title text-truncate">{{ $product->product_name }}</h5>
                                     <h6 class="card-text">RM{{ $product->product_price }}</h6>

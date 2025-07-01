@@ -10,6 +10,8 @@ use App\Mail\StudentBanned;
 use App\Models\Student;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\Report;
+
 
 
 use App\Http\Controllers\Controller;
@@ -63,7 +65,7 @@ class AdminController extends Controller
     // Delete the student
     $student->delete();
 
-    return redirect()->route('admin.view.student')->with('status', 'Student deleted and email notification sent.');
+    return redirect()->route('view.student')->with('status', 'Student deleted and email notification sent.');
 }
 
        public function viewProduct()
@@ -125,6 +127,12 @@ public function reject(Product $product)
     $product->delete();
 
     return back()->with('success', 'Product rejected, deleted and email sent.');
+}
+
+public function viewReports()
+{
+    $reports = Report::with(['buyer', 'seller', 'order.product'])->latest()->get();
+    return view('admin-report', compact('reports'));
 }
     }
 

@@ -15,6 +15,8 @@
                             <th>Quantity</th>
                             <th>Total (RM)</th>
                             <th>Ordered At</th>
+                            <th>Action</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,7 +31,16 @@
                                 <td>{{ $order->quantity }}</td>
                                 <td>RM {{ number_format($order->product->product_price * $order->quantity, 2) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($order->ordered_at)->format('d M Y, h:i A') }}</td>
+                                <td>
+                                    <a href="{{ route('rate.seller.form', ['order' => $order->id]) }}" class="btn btn-sm btn-primary">
+                                        Rate Seller
+                                    </a>
+                                </td>       
+                                <td>
+                                    <a href="{{ route('report.create', $order) }}" class="btn btn-sm btn-danger">Report Seller</a>
+                                </td>                         
                             </tr>
+                           
                         @endforeach
                     </tbody>
                 </table>

@@ -58,7 +58,7 @@
                         <button class="nav-link" id="v-pills-listings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-listings" type="button" role="tab" aria-controls="v-pills-listings" aria-selected="false">Listings</button>
                         <button class="nav-link" id="v-pills-insights-tab" data-bs-toggle="pill" data-bs-target="#v-pills-insights" type="button" role="tab" aria-controls="v-pills-insights" aria-selected="false">Insights</button>
                         <button class="nav-link" id="v-pills-review-tab" data-bs-toggle="pill" data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review" aria-selected="false">Review</button>
-                        <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false">Order History</button>
+                        <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false">Purchase History</button>
                     </div>
                     <div class="tab-content col-10" id="v-pills-tabContent">
                         <!-- Profile -->
