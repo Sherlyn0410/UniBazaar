@@ -18,6 +18,7 @@ class Student extends Authenticatable
         'email',
         'password',
         'contact',
+        'is_admin'
     ];
 
     public function products()

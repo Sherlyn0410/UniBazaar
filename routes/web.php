@@ -74,20 +74,25 @@ Route::post('product-upload', [SellerController::class, 'storeProducts'])->name(
 });
 
  //admin route put here
-Route::prefix('admin')->group(function (){
+ Route::middleware(['auth', 'is_admin'])->group(function () {
+    Route::prefix('admin')->group(function (){
 
-    Route::get('/', [AdminController::class, 'viewAdmin'])->name('view.admin');
-    Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
-    Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
-    Route::get('view-order', [AdminController::class, 'viewOrder'])->name('view.order');
-    Route::get('/pending', [AdminController::class, 'pending'])->name('admin.products.pending');
-    Route::post('/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
-    Route::post('/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
-    Route::get('/privacy-policy', function () {
-    return view('privacy');
-})->name('privacy.policy');
+        Route::get('/', [AdminController::class, 'viewAdmin'])->name('view.admin');
+        Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
+        Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
+        Route::get('view-order', [AdminController::class, 'viewOrder'])->name('view.order');
+        Route::get('/pending', [AdminController::class, 'pending'])->name('admin.products.pending');
+        Route::post('/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
+        Route::post('/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
+        Route::get('/privacy-policy', function () {
+        return view('privacy');
+    })->name('privacy.policy');
 
 });
+
+});
+
+
 
 
 

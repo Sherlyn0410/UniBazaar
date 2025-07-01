@@ -6,7 +6,7 @@
                     <a href="{{ route('marketplace') }}" class="fs-4 text-dark me-4">
                         <i class="bi bi-chevron-left"></i>
                     </a>
-                    <img src="{{ asset($product->product_image) }}" class="border rounded-4 object-fit-cover w-100" alt="{{ $product->product_name }}" style="max-height: 420px;">
+                    <img src="{{ asset('/assets/img/' . $product->product_image) }}" class="border rounded-4 object-fit-cover w-100" alt="{{ $product->product_name }}" style="max-height: 420px;">
                 </div>
                 <div class="col-lg-8 d-flex flex-column justify-content-between">
                     <div class="ms-3">

@@ -20,7 +20,7 @@
     <h5 class="fw-bold mb-3">🧾 Order Summary</h5>
 
     <div class="d-flex gap-3 align-items-start">
-        <img src="{{ asset($product->product_image) }}" width="100" class="rounded border" alt="Product Image">
+        <img src="{{ asset('/assets/img/' . $product->product_image) }}"" width="100" class="rounded border" alt="Product Image">
 
         <div class="flex-grow-1">
             <h5 class="mb-1">{{ $product->product_name }}</h5>
