@@ -52,18 +52,22 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::post('/charge', [CheckoutController::class, 'charge'])->name('stripe.charge');
     Route::post('/checkout/pay', [CheckoutController::class, 'processCartPayment'])->name('stripe.checkout.pay');
     Route::get('/checkout', [CartController::class, 'checkoutCart'])->name('cart.checkout');
-    Route::put('/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
+    Route::put('/cart]]]/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
     Route::get('/privacy-policy', function () {
     return view('privacy');
 })->name('privacy.policy');
     Route::get('/rate/seller/{order}', [RatingController::class, 'showPrompt'])->name('rate.seller.prompt');
     Route::get('/{order}/form', [RatingController::class, 'create'])->name('rate.seller.form');
     Route::post('/{order}', [RatingController::class, 'store'])->name('rate.seller.store');
-    Route::get('/{order}/report-form', [ReportController::class, 'createReport'])->name('report.create');
-    Route::post('/{order}', [ReportController::class, 'storeReport'])->name('report.store');
+    
+    Route::prefix('report')->group(function(){
+
+        Route::get('/{order}/report-form', [ReportController::class, 'createReport'])->name('report.create');
+        Route::post('/{order}', [ReportController::class, 'storeReport'])->name('report.store');
 
 
 
+    });
 
 
 });
