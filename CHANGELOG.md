@@ -1,6 +1,10 @@
 # Release Notes
 
-## [Unreleased](https://github.com/laravel/laravel/compare/V01.01.01...main)
+## [Unreleased](https://github.com/laravel/laravel/compare/V01.02.01...main)
+
+## [V01.02.01](https://github.com/laravel/laravel/compare/V01.01.01...V01.02.01) - 2025-07-01
+
+Complete HTML, CSS, and JS
 
 ## [V01.01.01](https://github.com/laravel/laravel/compare/v10.3.2...V01.01.01) - 2025-05-21
 
