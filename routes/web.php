@@ -79,6 +79,9 @@ Route::post('product-upload', [SellerController::class, 'storeProducts'])->name(
 
         Route::get('/', [AdminController::class, 'viewAdmin'])->name('view.admin');
         Route::get('view-student', [AdminController::class, 'viewStudent'])->name('view.student');
+        Route::get('/{id}/edit', [AdminController::class, 'editStudent'])->name('admin.edit.student');
+        Route::put('/{id}', [AdminController::class, 'updateStudent'])->name('admin.update.student');
+        Route::delete('/{id}', [AdminController::class, 'deleteStudent'])->name('admin.student.delete');
         Route::get('view-product', [AdminController::class, 'viewProduct'])->name('view.product');
         Route::get('view-order', [AdminController::class, 'viewOrder'])->name('view.order');
         Route::get('/pending', [AdminController::class, 'pending'])->name('admin.products.pending');

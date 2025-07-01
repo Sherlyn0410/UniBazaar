@@ -22,15 +22,17 @@
                 <td>{{$student ->name}}</td>
                 <td> {{$student ->email}}</td>
                 <td>{{$student ->contact}}</td>
-                <td><a href="" class="btn btn-sm btn-warning">Edit</a></td>
                 <td>
-                    <form method="post" action="">
-                    @csrf
-                    @method('delete')
-                    <input type="submit" value="Delete" class="btn btn-sm btn-danger">
+                    
+                   <form method="POST" action="{{ route('admin.student.delete', $student->id) }}">
+    @csrf
+    @method('DELETE')
+    <input type="submit" value="Delete" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">
+</form>
 
-                    </form>
                 </td>
+                <td>    <a href="{{ route('admin.edit.student', $student->id) }}" class="btn btn-sm btn-warning">Edit</a>
+</td>
             </tr>
         @endforeach
         </tbody>
