@@ -14,26 +14,39 @@ use App\Models\Order;
 
 class ProfileController extends Controller
 {
-   public function viewProfile()
+  public function viewProfile()
 {
     $student = Auth::guard('web')->user();
 
     $student->load(['receivedRatings.buyer']); // Load reviews with buyer details
 
-    $products = Product::where('student_id', Auth::id())->with('student')->get();//Only display logged in user
+    // Only the products created by this student
+    $products = Product::where('student_id', Auth::id())->with('student')->get();
+
+    // Only the orders made by this student (as buyer)
     $orders = Order::with(['buyer', 'product'])
-    ->where('buyer_id', auth()->id()) // ✅ Only orders for logged-in user
-    ->latest()
-    ->get();
-    $totalMoney = Order::where('is_paid', true)
+        ->where('buyer_id', auth()->id())
+        ->latest()
+        ->get();
+
+    // Total money earned from products sold by this student
+    $totalMoney = DB::table('orders')
         ->join('products', 'orders.product_id', '=', 'products.id')
+        ->where('products.student_id', Auth::id())
+        ->where('orders.is_paid', true)
         ->select(DB::raw('SUM(orders.quantity * products.product_price) as total'))
         ->value('total');
 
-    $totalSold = Order::where('is_paid', true)->sum('quantity');
+    // Total items sold by this student
+    $totalSold = DB::table('orders')
+        ->join('products', 'orders.product_id', '=', 'products.id')
+        ->where('products.student_id', Auth::id())
+        ->where('orders.is_paid', true)
+        ->sum('orders.quantity');
 
     return view('profile', compact('student', 'products', 'orders', 'totalMoney', 'totalSold'));
 }
+
 
     public function update(Student $student, Request $request)
     {
