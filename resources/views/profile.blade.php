@@ -3,7 +3,7 @@
         <div class="container py-4">
             <div class="d-flex flex-wrap align-items-center">
                 <div class="me-4 mb-3">
-                    <img src="{{ $student->profile_image ? asset('storage/profile_images/' . $student->profile_image) : 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }}"
+                        <img src="{{ $student->profile_image ? asset('assets/img/' . $student->profile_image) : 'https://cdn-icons-png.flaticon.com/512/147/147144.png' }}"
                         alt="Profile"
                         class="rounded-circle border border-white shadow"
                         style="width: 130px; height: 130px; object-fit: cover;">
@@ -23,8 +23,12 @@
                 <div class="mb-3">
                     <div class="border rounded bg-light px-4 py-3 text-center">
                         <h6 class="mb-1">⭐ Rating & Reviews</h6>
-                        <p class="mb-0 fw-semibold">4.8 / 5</p>
-                        <small class="text-muted">Based on 45 reviews</small>
+                            @if($totalReviews > 0)
+                                <p class="mb-0 fw-semibold">{{ number_format($averageRating, 1) }} / 5</p>
+                                <small class="text-muted">Based on {{ $totalReviews }} review{{ $totalReviews > 1 ? 's' : '' }}</small>
+                            @else
+                                <p class="mb-0 text-muted">No ratings yet</p>
+                            @endif
                     </div>
                 </div>
             </div>
@@ -143,6 +147,20 @@
         }
 
     </style>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    const fileInput = document.getElementById('profile_image');
+
+    if (fileInput) {
+        fileInput.addEventListener('change', function () {
+            // Submit the form automatically when a file is selected
+            document.getElementById('profileForm').submit();
+        });
+    }
+});
+</script>
+
 </x-app-layout>
 
 
