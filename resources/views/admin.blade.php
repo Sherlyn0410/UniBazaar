@@ -1,7 +1,7 @@
 @extends('layouts.admin-main')
 
 @section('content')
-    <h3 class="mb-4 fw-semibold text-dark">Dashboard</h3>
+    <h3 class="mb-4 fw-semibold">Dashboard</h3>
 
     <div class="row">
         <div class="col-sm-6 mb-3 mb-sm-0">

@@ -19,6 +19,14 @@
                     <img src="{{ asset('assets/img/inti-logo.png') }}" alt="Logo" class="d-inline-block align-text-top" style="height: 70px;">
                 </a>
                 <hr>
+                <!-- User dropdown at the bottom -->
+                <div class="d-flex align-items-center px-3">
+                    <span class="border bg-light text-secondary rounded-circle d-flex justify-content-center align-items-center me-2" style="width:32px; height:32px;">
+                        <i class="bi bi-person-fill fs-5"></i>
+                    </span>
+                    <strong>{{ Auth::user()->name ?? 'Admin' }}</strong>
+                </div>
+                <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
                     <li class="nav-item">
                         <a href="{{ route('view.admin') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ request()->routeIs('view.admin') ? 'active' : '' }}" aria-current="page">
@@ -27,7 +35,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('view.student') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ request()->routeIs('view.student') ? 'active' : '' }}">
+                        <a href="{{ route('view.student') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ (request()->routeIs('view.student') || request()->routeIs('admin.edit.student')) ? 'active' : '' }}">
                             <i class="bi bi-person me-2 fs-4" aria-hidden="true"></i>
                             Users
                         </a>
@@ -44,9 +52,9 @@
                             Orders
                         </a>
                     </li>
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a href="{{ route('admin.reports') }}" class="nav-link link-body-emphasis d-flex align-items-center {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
-                            <i class="bi bi-bag me-2 fs-4" aria-hidden="true"></i>
+                            <i class="bi bi-flag me-2 fs-4" aria-hidden="true"></i>
                             Report
                         </a>
                     </li>
@@ -54,24 +62,14 @@
             </div>
             <div class="mt-auto">
                 <hr>
-                <!-- User dropdown at the bottom -->
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                        <strong>Admin</strong>
-                    </a>
-                    <ul class="dropdown-menu text-small shadow">
-                        <li>
-                            <a class="dropdown-item" href="#">Settings</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" href="#">Profile</a>
-                        </li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <a class="dropdown-item" href="#">Sign out</a>
-                        </li>
-                    </ul>
+                <div class="px-3">
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="nav-link link-danger d-flex align-items-center fw-semibold">
+                            <i class="bi bi-box-arrow-right me-2 fs-4" aria-hidden="true"></i>
+                            Log Out
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>

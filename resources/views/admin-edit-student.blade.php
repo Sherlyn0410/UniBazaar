@@ -1,8 +1,7 @@
 @extends('layouts.admin-main')
 
 @section('content')
-<div class="container">
-    <h3 class="mb-4">Edit Student</h3>
+    <h3 class="mb-4 fw-semibold">Edit Student</h3>
 
     <form method="POST" action="{{ route('admin.update.student', $student->id) }}">
         @csrf
@@ -25,9 +24,15 @@
 
     
 
-        <div class="text-end">
-            <button type="submit" class="btn btn-primary">Update Student</button>
+        <div class="text-end mt-5">
+            <a class="text-decoration-none me-2" href="{{ route('view.student') }}">
+                <x-red-outline-button>
+                    Cancel
+                </x-red-outline-button>
+            </a>
+            <x-red-button>
+                Update Student
+            </x-red-button>
         </div>
     </form>
-</div>
 @endsection

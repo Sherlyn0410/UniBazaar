@@ -1,7 +1,7 @@
  @extends('layouts.admin-main')
  
 @section('content')
-    <h3 class="mb-4 fw-semibold text-dark">Order List (Admin)</h3>
+    <h3 class="mb-4 fw-semibold">Order List (Admin)</h3>
         @if($orders->isEmpty())
             <div class="alert alert-info">No orders found.</div>
         @else

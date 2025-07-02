@@ -20,7 +20,8 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     public function viewStudent(){
-           $students = Student::all();
+        $students = Student::all();
+        $students = Student::where('is_admin', '!=', 1)->get();
         return view('view-student',['students' => $students]);
     }
 
