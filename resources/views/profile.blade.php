@@ -1,21 +1,4 @@
 <x-app-layout>
-    @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show" role="alert" id="rating-success">
-        {{ session('success') }}
-    </div>
-
-    <script>
-        setTimeout(function() {
-            let alertBox = document.getElementById('rating-success');
-            if (alertBox) {
-                alertBox.classList.remove('show');
-                alertBox.classList.add('fade');
-                alertBox.style.opacity = '0';
-            }
-        }, 5000); // 5 seconds
-    </script>
-@endif
-
     <div class="container-fluid bg-white">
         <div class="container py-4">
             <div class="d-flex flex-wrap align-items-center">
@@ -49,6 +32,14 @@
 
 
             <div class="row mt-4">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" id="rating-success">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                @endif
+
                 <!-- Alert insights -->
                 @if (session('status'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">

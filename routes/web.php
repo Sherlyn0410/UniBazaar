@@ -54,9 +54,6 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::post('/checkout/pay', [CheckoutController::class, 'processCartPayment'])->name('stripe.checkout.pay');
     Route::get('/checkout', [CartController::class, 'checkoutCart'])->name('cart.checkout');
     Route::put('/cart]]]/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.updateQuantity');
-    Route::get('/privacy-policy', function () {
-    return view('privacy');
-})->name('privacy.policy');
     Route::get('/rate/seller/{order}', [RatingController::class, 'showPrompt'])->name('rate.seller.prompt');
     Route::get('/{order}/form', [RatingController::class, 'create'])->name('rate.seller.form');
     Route::post('/{order}', [RatingController::class, 'store'])->name('rate.seller.store');
@@ -96,10 +93,7 @@ Route::post('product-upload', [SellerController::class, 'storeProducts'])->name(
         Route::get('/pending', [AdminController::class, 'pending'])->name('admin.products.pending');
         Route::post('/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
         Route::post('/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
-        Route::get('/privacy-policy', function () {
-        return view('privacy');
-    })->name('privacy.policy');
-Route::get('/admin-report', [AdminController::class, 'viewReports'])->name('admin.reports');
+        Route::get('/admin-report', [AdminController::class, 'viewReports'])->name('admin.reports');
 
 
 });
@@ -134,3 +128,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Route::get('/privacy-policy', function () {
+    return view('privacy');
+})->name('privacy.policy');

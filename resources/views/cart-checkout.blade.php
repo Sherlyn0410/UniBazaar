@@ -13,49 +13,49 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        <!-- Payment Form -->
         <form action="{{ route('stripe.checkout.pay') }}" method="POST" id="payment-form">
             @csrf
 
             <!-- 🛒 Order Summary -->
             <div class="card shadow-sm mb-4 p-4">
                 <h5 class="fw-semibold mb-3">🧾 Order Summary</h5>
-                <div class="table-responsive">
-                    <table class="table table-bordered text-center mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th>Price (each)</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php $grandTotal = 0; @endphp
-                            @foreach ($cartItems as $item)
-                                @php
-                                    $price = $item->product->product_price;
-                                    $total = $price * $item->quantity;
-                                    $grandTotal += $total;
-                                @endphp
-                                <tr>
-                                    <td>{{ $item->product->product_name }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>RM {{ number_format($price, 2) }}</td>
-                                    <td>RM {{ number_format($total, 2) }}</td>
-                                </tr>
-
-                                <!-- Hidden for backend use -->
-                                <input type="hidden" name="cart_items[{{ $item->id }}][product_id]" value="{{ $item->product_id }}">
-                                <input type="hidden" name="cart_items[{{ $item->id }}][quantity]" value="{{ $item->quantity }}">
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="text-end mt-4">
-                    <h5>Subtotal: <span class="fw-bold">RM {{ number_format($grandTotal, 2) }}</span></h5>
-                    <h4 class="text-danger fw-bold">Total: RM {{ number_format($grandTotal, 2) }}</h4>
-                    <input type="hidden" name="total" value="{{ $grandTotal }}">
+                <div class="d-flex flex-column gap-3">
+                    @php $grandTotal = 0; @endphp
+                    @foreach ($cartItems as $item)
+                        @php
+                            $price = $item->product->product_price;
+                            $total = $price * $item->quantity;
+                            $grandTotal += $total;
+                        @endphp
+                        <div class="d-flex align-items-center border rounded-3 p-3 bg-light">
+                            @if($item->product && $item->product->product_image)
+                                <img src="{{ asset('/assets/img/' . $item->product->product_image) }}"
+                                     alt="{{ $item->product->product_name }}"
+                                     class="rounded border me-3"
+                                     style="width:64px; height:64px; object-fit:cover;">
+                            @else
+                                <span class="text-muted me-3 d-flex align-items-center justify-content-center"
+                                      style="width:64px; height:64px; background:#f0f0f0; border-radius:8px;">
+                                    <i class="bi bi-image fs-2"></i>
+                                </span>
+                            @endif
+                            <div class="flex-grow-1">
+                                <div class="fw-semibold">{{ $item->product->product_name }}</div>
+                                <div class="text-muted small">{{ $item->product->category ?? '' }}</div>
+                                <div class="mt-1">
+                                    <span class="ms-0">Price: <span class="fw-semibold">RM {{ number_format($price, 2) }}</span></span>
+                                </div>
+                            </div>
+                            <div class="text-end ms-3">
+                                <span class="badge bg-secondary mb-1">Qty: {{ $item->quantity }}</span>
+                                <div class="fw-bold text-danger">RM {{ number_format($total, 2) }}</div>
+                            </div>
+                        </div>
+                        <!-- Hidden for backend use -->
+                        <input type="hidden" name="cart_items[{{ $item->id }}][product_id]" value="{{ $item->product_id }}">
+                        <input type="hidden" name="cart_items[{{ $item->id }}][quantity]" value="{{ $item->quantity }}">
+                    @endforeach
                 </div>
             </div>
 
@@ -91,16 +91,24 @@
                 </div>
 
                 <p class="mt-4 text-muted small">
-                    By proceeding, you agree to our <a href="{{ route('privacy.policy') }}" target="_blank">Privacy Policy</a>.
+                    By proceeding, you agree to our <a href="{{ route('privacy.policy') }}">Privacy Policy</a>.
                 </p>
-
-                <div class="text-end mt-4">
-                    <button type="submit" class="btn btn-danger px-4">
-                        Pay RM {{ number_format($grandTotal, 2) }}
-                    </button>
-                </div>
             </div>
+
+            <div style="height: 80px;"></div>
+            {{-- Spacer to prevent content from being hidden behind sticky bar --}}
         </form>
+         <!-- Sticky Bottom Bar -->
+        <div class="bg-white border-top shadow-lg py-3 px-4 d-flex align-items-center justify-content-end fixed-bottom" style="z-index:1050;">
+            <div class="text-end me-4">
+                <h6 class="mb-1">Subtotal: <span class="fw-bold">RM {{ number_format($grandTotal, 2) }}</span></h6>
+                <h5 class="text-danger fw-bold mb-0">Total: RM {{ number_format($grandTotal, 2) }}</h5>
+                <input type="hidden" name="total" value="{{ $grandTotal }}">
+            </div>
+            <button type="submit" form="payment-form" class="btn btn-danger btn-lg">
+                Pay Now
+            </button>
+        </div>
     </div>
 
     <script src="https://js.stripe.com/v3/"></script>
