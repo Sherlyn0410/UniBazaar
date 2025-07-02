@@ -71,22 +71,22 @@
                 <!-- Sidebar -->
                 <div class="d-flex align-items-start">
                     <div class="nav flex-column nav-pills col-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Profile</button>
-                        <button class="nav-link" id="v-pills-listings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-listings" type="button" role="tab" aria-controls="v-pills-listings" aria-selected="false">Listings</button>
-                        <button class="nav-link" id="v-pills-insights-tab" data-bs-toggle="pill" data-bs-target="#v-pills-insights" type="button" role="tab" aria-controls="v-pills-insights" aria-selected="false">Insights</button>
-                        <button class="nav-link" id="v-pills-review-tab" data-bs-toggle="pill" data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review" aria-selected="false">Review</button>
-                        <button class="nav-link" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="false">Purchase History</button>
+                        <button class="nav-link {{ request('tab', 'profile') === 'profile' ? 'active' : '' }}" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="{{ request('tab', 'profile') === 'profile' ? 'true' : 'false' }}">Profile</button>
+                        <button class="nav-link {{ request('tab') === 'listings' ? 'active' : '' }}" id="v-pills-listings-tab" data-bs-toggle="pill" data-bs-target="#v-pills-listings" type="button" role="tab" aria-controls="v-pills-listings" aria-selected="{{ request('tab') === 'listings' ? 'true' : 'false' }}">Listings</button>
+                        <button class="nav-link {{ request('tab') === 'insights' ? 'active' : '' }}" id="v-pills-insights-tab" data-bs-toggle="pill" data-bs-target="#v-pills-insights" type="button" role="tab" aria-controls="v-pills-insights" aria-selected="{{ request('tab') === 'insights' ? 'true' : 'false' }}">Insights</button>
+                        <button class="nav-link {{ request('tab') === 'review' ? 'active' : '' }}" id="v-pills-review-tab" data-bs-toggle="pill" data-bs-target="#v-pills-review" type="button" role="tab" aria-controls="v-pills-review" aria-selected="{{ request('tab') === 'review' ? 'true' : 'false' }}">Review</button>
+                        <button class="nav-link {{ request('tab') === 'order' ? 'active' : '' }}" id="v-pills-order-tab" data-bs-toggle="pill" data-bs-target="#v-pills-order" type="button" role="tab" aria-controls="v-pills-order" aria-selected="{{ request('tab') === 'order' ? 'true' : 'false' }}">Purchase History</button>
                     </div>
                     <div class="tab-content col-10" id="v-pills-tabContent">
                         <!-- Profile -->
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
+                        <div class="tab-pane fade {{ request('tab', 'profile') === 'profile' ? 'show active' : '' }}" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab" tabindex="0">
                             <form id="profileForm" action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
 
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <h5 class="fw-semibold">Profile Information</h5>
-                                    <x-red-button class="btn-sm">
+                                    <x-red-button>
                                         <i class="bi bi-pencil-square me-2"></i>{{ __('Save Changes') }}
                                     </x-red-button>
                                 </div>
@@ -109,19 +109,19 @@
                             </form>
                         </div>
                         <!-- Listings -->
-                        <div class="tab-pane fade" id="v-pills-listings" role="tabpanel" aria-labelledby="v-pills-listings-tab" tabindex="0">
+                        <div class="tab-pane fade {{ request('tab') === 'listings' ? 'show active' : '' }}" id="v-pills-listings" role="tabpanel" aria-labelledby="v-pills-listings-tab" tabindex="0">
                             @include('listings')
                         </div>
                         <!-- Insights -->
-                        <div class="tab-pane fade" id="v-pills-insights" role="tabpanel" aria-labelledby="v-pills-insights-tab" tabindex="0">
+                        <div class="tab-pane fade {{ request('tab') === 'insights' ? 'show active' : '' }}" id="v-pills-insights" role="tabpanel" aria-labelledby="v-pills-insights-tab" tabindex="0">
                             @include('insights')
                         </div>
                         <!-- Review -->
-                        <div class="tab-pane fade" id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab" tabindex="0">
+                        <div class="tab-pane fade {{ request('tab') === 'review' ? 'show active' : '' }}" id="v-pills-review" role="tabpanel" aria-labelledby="v-pills-review-tab" tabindex="0">
                             @include('rating')
                         </div>
                         <!-- Order History -->
-                        <div class="tab-pane fade" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
+                        <div class="tab-pane fade {{ request('tab') === 'order' ? 'show active' : '' }}" id="v-pills-order" role="tabpanel" aria-labelledby="v-pills-order-tab" tabindex="0">
                             @include('orders')
                         </div>
                     </div>

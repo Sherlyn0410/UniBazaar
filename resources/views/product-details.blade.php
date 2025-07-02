@@ -3,7 +3,7 @@
         <div class="container py-4">
             <div class="row justify-content-center">
                 <div class="col-lg-4 d-flex justify-content-center mb-4 mb-lg-0">
-                    <a href="{{ route('marketplace') }}" class="fs-4 text-dark me-4">
+                    <a href="javascript:history.back()" class="fs-4 text-dark me-4">
                         <i class="bi bi-chevron-left"></i>
                     </a>
                     <img src="{{ asset('/assets/img/' . $product->product_image) }}" class="border rounded-4 object-fit-cover w-100" alt="{{ $product->product_name }}" style="max-height: 420px;">
