@@ -116,4 +116,18 @@ public function updateProduct(Request $request, Product $product)
 
     return redirect()->route('profile')->with('status', 'Product updated successfully!');
 }
+
+    public function deleteProduct(Product $product)
+    {
+        // Delete product image from storage if exists
+        if ($product->product_image && \Storage::exists('public/assets/img/' . $product->product_image)) {
+            \Storage::delete('public/assets/img/' . $product->product_image);
+        }
+
+        // Delete the product
+        $product->delete();
+
+        return redirect()->route('profile', ['tab' => 'listings'])
+            ->with('status', 'Product deleted successfully!');
+    }
 }

@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="mt-5 d-block text-end">
-                        <x-red-button>
+                        <x-red-button class="btn-lg">
                             <i class="bi bi-plus-circle me-2"></i>
                             {{ __(' Create Listing') }}
                         </x-red-button>

@@ -47,6 +47,7 @@ Route::get('/', [MainController::class, 'viewMain'])->name('main');
     Route::get('/profile/{sellerId}', [ProfileController::class, 'viewProfilee'])->name('seller.profile');
     Route::get('/{product}/product-edit', [ProfileController::class, 'editProduct'])->name('edit.product');
     Route::put('/{product}/product-edit', [ProfileController::class, 'updateProduct'])->name('update.product');
+    Route::delete('/product/{product}', [ProfileController::class, 'deleteProduct'])->name('delete.product');
     Route::get('/search', [MainController::class, 'search'])->name('search');
     Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('stripe.checkout');
     Route::post('/charge', [CheckoutController::class, 'charge'])->name('stripe.charge');

@@ -63,6 +63,11 @@
 
                     {{-- Submit --}}
                     <div class="mt-5 d-block text-end">
+                        <a class="text-decoration-none me-2" href="{{ route('profile', ['tab' => 'listings']) }}">
+                            <x-red-outline-button>
+                                Cancel
+                            </x-red-outline-button>
+                        </a>
                         <x-red-button>
                             <i class="bi bi-pencil-square me-2"></i>
                             {{ __(' Update Product') }}

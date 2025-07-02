@@ -31,7 +31,7 @@
                     <a class="nav-link {{ request()->routeIs('main') ? 'active' : '' }}" href="{{ route('main') }}">{{ __('Home') }}</a>
                 </li>
                 <li class="nav-item me-2">
-                    <a class="nav-link {{ request()->routeIs('marketplace') ? 'active' : '' }}" href="{{ route('marketplace') }}">{{ __('Marketplace') }}</a>
+                    <a class="nav-link {{ request()->routeIs('marketplace') || request()->routeIs('category.filter') ? 'active' : '' }}" href="{{ route('marketplace') }}">{{ __('Marketplace') }}</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('products.upload') ? 'active' : '' }}" href="{{ route('products.upload') }}">{{ __('Sell') }}</a>
