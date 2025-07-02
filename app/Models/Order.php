@@ -10,7 +10,10 @@ class Order extends Model
       'buyer_id',
       'product_id',
       'quantity', 
-    'ordered_at' => 'datetime',
+      'ordered_at' => 'datetime',
+       'is_paid'
+
+
       ];
 
     public function buyer()
