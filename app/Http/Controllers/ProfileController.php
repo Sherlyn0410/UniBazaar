@@ -21,7 +21,9 @@ class ProfileController extends Controller
     $student->load(['receivedRatings.buyer']); // Load reviews with buyer details
 
     // Only the products created by this student
-    $products = Product::where('student_id', Auth::id())->with('student')->get();
+$products = Product::where('student_id', Auth::id())
+    ->with(['student', 'orders.buyer']) //include orders + buyer details
+    ->get();
 
     // Only the orders made by this student (as buyer)
     $orders = Order::with(['buyer', 'product'])
@@ -44,38 +46,49 @@ class ProfileController extends Controller
         ->where('orders.is_paid', true)
         ->sum('orders.quantity');
 
-    return view('profile', compact('student', 'products', 'orders', 'totalMoney', 'totalSold'));
+   $averageRating = $student->receivedRatings()->avg('rating');
+    $totalReviews = $student->receivedRatings()->count();
+
+    return view('profile', compact('student', 'products', 'orders', 'totalMoney', 'totalSold', 'averageRating', 'totalReviews'));
+
 }
 
 
-    public function update(Student $student, Request $request)
-    {
-        $data = $request->validate([
-            'name'  => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
+  public function update(Student $student, Request $request)
+{
+    $data = $request->validate([
+        'name'  => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'contact' => 'nullable|string|max:20',
+        'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    ]);
 
-        $student = Auth::guard('web')->user();
+    $student = Auth::guard('web')->user(); // Get current student
 
-        if ($request->hasFile('profile_image')) {
-            // Delete old image
-            if ($student->profile_image && Storage::exists('public/profile_images/' . $student->profile_image)) {
-                Storage::delete('public/profile_images/' . $student->profile_image);
-            }
-
-            $imageName = time() . '.' . $request->profile_image->extension();
-            $request->profile_image->storeAs('public/profile_images', $imageName);
-            $student->profile_image = $imageName;
+    if ($request->hasFile('profile_image')) {
+        // Delete old image if exists
+        if ($student->profile_image && file_exists(public_path('assets/img/' . $student->profile_image))) {
+            unlink(public_path('assets/img/' . $student->profile_image));
         }
 
-        $student->update($data);
+        // Store new image
+        $imageName = time() . '.' . $request->file('profile_image')->extension();
+        $request->file('profile_image')->move(public_path('assets/img'), $imageName);
 
-
-
-        return redirect()->route('profile')->with('status', 'Profile updated successfully!');
+        // Set the new profile image name manually
+        $student->profile_image = $imageName;
     }
+
+    // Now update the rest of the fields manually (don't use $student->update($data))
+    $student->name = $data['name'];
+    $student->email = $data['email'];
+    $student->contact = $data['contact'] ?? null;
+
+    $student->save(); // ✅ Save all changes, including image
+
+    return redirect()->route('profile')->with('status', 'Profile updated successfully!');
+}
+
 
 
     public function editProduct(Product $product)

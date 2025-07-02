@@ -27,9 +27,7 @@
                                  class="rounded border"
                                  style="width:48px; height:48px; object-fit:cover;">
                         </td>
-                        <td>
-                            <span class="fw-semibold">{{ $product->product_name }}</span>
-                        </td>
+                        <td class="fw-semibold">{{ $product->product_name }}</td>
                         <td>RM{{ $product->product_price }}</td>
                         <td>{{ $product->quantity }}</td>
                         <td>
@@ -42,20 +40,13 @@
                             </span>
                         </td>
                         <td>
-                            <div class="d-flex align-items-center gap-2">
-                                @if($product->buyer && $product->buyer->profile_image)
-                                    <img src="{{ asset('storage/profile_images/' . $product->buyer->profile_image) }}"
-                                         alt="{{ $product->buyer->name }}"
-                                         class="rounded-circle border"
-                                         style="width:24px; height:24px; object-fit:cover;">
-                                @else
-                                    <span class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center"
-                                          style="width:24px; height:24px;">
-                                        <i class="bi bi-person-fill"></i>
-                                    </span>
-                                @endif
-                                <span>{{ $product->buyer->name ?? '-' }}</span>
-                            </div>
+                            @if ($product->orders->count())
+                                <button class="btn btn-sm btn-outline-dark" data-bs-toggle="modal" data-bs-target="#buyersModal{{ $product->id }}">
+                                    View Buyers ({{ $product->orders->count() }})
+                                </button>
+                            @else
+                                <span class="text-muted">No buyers</span>
+                            @endif
                         </td>
                         <td class="text-center">
                             <div class="d-flex justify-content-center gap-2">
@@ -77,13 +68,51 @@
                             </div>
                         </td>
                     </tr>
+
+                    {{-- 🧾 Buyer Modal --}}
+                    <div class="modal fade" id="buyersModal{{ $product->id }}" tabindex="-1" aria-labelledby="buyersModalLabel{{ $product->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="buyersModalLabel{{ $product->id }}">Buyers of {{ $product->product_name }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    @if($product->orders->isEmpty())
+                                        <p class="text-muted">No buyers yet.</p>
+                                    @else
+                                        <ul class="list-group">
+                                            @foreach($product->orders as $order)
+                                                <li class="list-group-item d-flex align-items-center gap-3">
+                                                    <div>
+                                                        @if($order->buyer->profile_image)
+                                                            <img src="{{ asset('storage/profile_images/' . $order->buyer->profile_image) }}"
+                                                                 alt="{{ $order->buyer->name }}"
+                                                                 class="rounded-circle border"
+                                                                 style="width:40px; height:40px; object-fit:cover;">
+                                                        @else
+                                                            <i class="bi bi-person-circle fs-4 text-secondary"></i>
+                                                        @endif
+                                                    </div>
+                                                    <div>
+                                                        <div><strong>{{ $order->buyer->name }}</strong> ({{ $order->buyer->email }})</div>
+                                                        <div>Ordered: {{ $order->quantity }} units on {{ \Carbon\Carbon::parse($order->ordered_at)->format('d M Y, h:i A') }}</div>
+                                                        <div>Contact: {{$order->buyer->contact}}</div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
             </tbody>
         </table>
     </div>
 @endif
 
-{{-- Add this script at the bottom of your file or in a @push('scripts') section --}}
 <script>
 function confirmDelete(event) {
     event.preventDefault();
