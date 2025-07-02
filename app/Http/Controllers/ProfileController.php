@@ -59,7 +59,7 @@ $products = Product::where('student_id', Auth::id())
     $data = $request->validate([
         'name'  => 'required|string|max:255',
         'email' => 'required|email|max:255',
-        'contact' => 'nullable|string|max:20',
+        'contact' => 'required|numeric|max:20',
         'profile_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
     ]);
 

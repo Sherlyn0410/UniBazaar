@@ -15,7 +15,7 @@
                         <input type="file" name="product_image" id="product_image" class="form-control" accept="image/*">
                         @if($product->product_image)
                             <p class="mt-2">Current:
-                                <img src="{{ asset($product->product_image) }}" width="100">
+                                <img src="{{ asset('/assets/img/' . $product->product_image) }}" width="100">
                             </p>
                         @endif
                     </div>
