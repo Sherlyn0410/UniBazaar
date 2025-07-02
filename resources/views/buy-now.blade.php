@@ -48,10 +48,6 @@
                     <input class="form-check-input" type="radio" name="payment_method" id="pay_stripe" value="stripe" checked>
                     <label class="form-check-label" for="pay_stripe">Pay with Card (Stripe)</label>
                 </div>
-                <div class="form-check mt-2">
-                    <input class="form-check-input" type="radio" name="payment_method" id="pay_in_person" value="pay_in_person">
-                    <label class="form-check-label" for="pay_in_person">Pay in Person</label>
-                </div>
 
                 <div id="stripe-section" class="mt-3">
                     <label for="card-element">Card Info</label>
@@ -80,34 +76,20 @@
         card.mount('#card-element');
 
         const form = document.getElementById('payment-form');
-        const stripeSection = document.getElementById('stripe-section');
-        const payStripe = document.getElementById('pay_stripe');
-        const payInPerson = document.getElementById('pay_in_person');
-
-        function toggleStripe() {
-            stripeSection.style.display = payStripe.checked ? 'block' : 'none';
-        }
-
-        payStripe.addEventListener('change', toggleStripe);
-        payInPerson.addEventListener('change', toggleStripe);
-        toggleStripe();
-
         form.addEventListener('submit', function (e) {
-            if (payStripe.checked) {
-                e.preventDefault();
-                stripe.createToken(card).then(result => {
-                    if (result.error) {
-                        document.getElementById('card-errors').textContent = result.error.message;
-                    } else {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'stripeToken';
-                        input.value = result.token.id;
-                        form.appendChild(input);
-                        form.submit();
-                    }
-                });
-            }
+            e.preventDefault();
+            stripe.createToken(card).then(result => {
+                if (result.error) {
+                    document.getElementById('card-errors').textContent = result.error.message;
+                } else {
+                    const hiddenInput = document.createElement('input');
+                    hiddenInput.type = 'hidden';
+                    hiddenInput.name = 'stripeToken';
+                    hiddenInput.value = result.token.id;
+                    form.appendChild(hiddenInput);
+                    form.submit();
+                }
+            });
         });
     </script>
 </x-app-layout>

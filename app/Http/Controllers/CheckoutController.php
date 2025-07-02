@@ -27,7 +27,7 @@ class CheckoutController extends Controller
             'name' => 'required|string',
             'address' => 'required|string',
             'phone' => 'required|string',
-            'payment_method' => 'required|string',
+            // 'payment_method' => 'required|string',
         ]);
 
         // Example: Save order data to database (you can create Order model/table)
@@ -145,6 +145,7 @@ public function charge(Request $request)
                 ]);
 
                 $product->quantity -= $data['quantity'];
+                $product->updateStockStatus();
                 $product->save();
 
                 Cart::destroy($itemId);

@@ -21,6 +21,17 @@ class Product extends Model
         'status'
         ];
         
+
+public function updateStockStatus()
+{
+    if ($this->quantity <= 0 && $this->status !== 'out_of_stock') {
+        $this->status = 'out_of_stock';
+        $this->save();
+    } elseif ($this->quantity > 0 && $this->status === 'out_of_stock') {
+        $this->status = 'live';
+        $this->save();
+    }
+}
  public function student()
 {
     return $this->belongsTo(Student::class);
