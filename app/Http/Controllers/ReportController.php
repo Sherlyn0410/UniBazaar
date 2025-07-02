@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
-    public function createReport(Order $order)
+    public function createReport(Order $order, Request $request)
     {
-        return view('report-form', compact('order'));
+        $index = $request->query('index', null);
+        return view('report-form', compact('order', 'index'));
     }
 
     public function storeReport(Request $request, Order $order)
@@ -24,7 +25,7 @@ class ReportController extends Controller
             'order_id' => $order->id,
             'reason' => $request->reason,
         ]);
-        return redirect()->route('profile')->with('success', 'Seller report submitted successfully.');
+        return redirect()->route('profile', ['tab' => 'order'])->with('success', 'Seller report submitted successfully.');
     }
 }
 

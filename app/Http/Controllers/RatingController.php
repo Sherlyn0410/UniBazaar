@@ -41,7 +41,7 @@ public function store(Request $request, Order $order)
         'review' => $request->review,
     ]);
 
-    return redirect()->route('marketplace')->with('success', 'Thank you for your feedback!');
+    return redirect()->route('profile', ['tab' => 'order'])->with('success', 'Thank you for your feedback!');
 }
 
 }

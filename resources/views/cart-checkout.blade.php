@@ -49,7 +49,7 @@
                             </div>
                             <div class="text-end ms-3">
                                 <span class="badge bg-secondary mb-1">Qty: {{ $item->quantity }}</span>
-                                <div class="fw-bold text-danger">RM {{ number_format($total, 2) }}</div>
+                                <div class="fw-bold text-danger text-nowrap">RM {{ number_format($total, 2) }}</div>
                             </div>
                         </div>
                         <!-- Hidden for backend use -->
@@ -97,18 +97,20 @@
 
             <div style="height: 80px;"></div>
             {{-- Spacer to prevent content from being hidden behind sticky bar --}}
-        </form>
-         <!-- Sticky Bottom Bar -->
-        <div class="bg-white border-top shadow-lg py-3 px-4 d-flex align-items-center justify-content-end fixed-bottom" style="z-index:1050;">
-            <div class="text-end me-4">
-                <h6 class="mb-1">Subtotal: <span class="fw-bold">RM {{ number_format($grandTotal, 2) }}</span></h6>
-                <h5 class="text-danger fw-bold mb-0">Total: RM {{ number_format($grandTotal, 2) }}</h5>
-                <input type="hidden" name="total" value="{{ $grandTotal }}">
+
+            <!-- Sticky Bottom Bar -->
+            <div class="bg-white border-top shadow-lg py-3 px-4 d-flex align-items-center justify-content-end fixed-bottom" style="z-index:1050;">
+                <div class="text-end me-4">
+                    <h6 class="mb-1">Subtotal: <span class="fw-bold">RM {{ number_format($grandTotal, 2) }}</span></h6>
+                    <h5 class="text-danger fw-bold mb-0">Total: RM {{ number_format($grandTotal, 2) }}</h5>
+                    <input type="hidden" name="total" value="{{ $grandTotal }}">
+                </div>
+                <button type="submit" form="payment-form" class="btn btn-danger btn-lg">
+                    Pay Now
+                </button>
             </div>
-            <button type="submit" form="payment-form" class="btn btn-danger btn-lg">
-                Pay Now
-            </button>
-        </div>
+        </form>
+         
     </div>
 
     <script src="https://js.stripe.com/v3/"></script>

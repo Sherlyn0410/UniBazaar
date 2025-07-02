@@ -3,7 +3,7 @@
 @if($products->isEmpty())
     <div class="alert alert-info">No listings found.</div>
 @else
-    <div class="table-responsive">
+    <div class="table-responsive" style="max-height: 350px; overflow-y: auto;">
         <table class="table table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
             <thead class="table-secondary align-middle">
                 <tr>

@@ -114,7 +114,7 @@ public function updateProduct(Request $request, Product $product)
         'product_image' => $product->product_image, // Add this to save new image if any
     ]);
 
-    return redirect()->route('profile')->with('status', 'Product updated successfully!');
+    return redirect()->route('profile', ['tab' => 'listings'])->with('status', 'Product updated successfully!');
 }
 
     public function deleteProduct(Product $product)

@@ -1,11 +1,13 @@
 <x-app-layout>
-    <div class="container py-5 text-center">
-        <h2 class="mb-4">✅ Thank you for your order!</h2>
-        <p>Would you like to leave a rating for the seller?</p>
+    <div class="container-fluid bg-white">
+        <div class="container py-5 text-center">
+            <h2 class="mb-4">✅ Thank you for your order!</h2>
+            <h5>Your payment was successful.</h5>
 
-        <div class="mt-4">
-            <a href="{{ route('rate.seller.form', $order->id) }}" class="btn btn-success me-3">Yes, Rate Now</a>
-            <a href="{{ route('marketplace') }}" class="btn btn-secondary">Maybe Later</a>
+            <div class="mt-5">
+                <a href="{{ route('marketplace') }}" class="btn btn-lg btn-outline-danger me-0 me-md-3 d-block d-md-inline">Back to Marketplace</a>
+                <a href="{{ route('profile', ['tab' => 'order']) }}" class="btn btn-lg btn-danger mt-3 me-md-0 d-block d-md-inline">View My Orders</a>
+            </div>
         </div>
     </div>
 </x-app-layout>

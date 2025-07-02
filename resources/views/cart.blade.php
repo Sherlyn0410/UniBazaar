@@ -25,8 +25,9 @@
                     <table class="table table-bordered align-middle text-center shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
                         <thead class="table-secondary align-middle">
                             <tr>
-                                <!-- Checkbox column -->
-                                <th style="width:40px;"></th> 
+                                <th style="width:40px;">
+                                    <input type="checkbox" id="select-all-checkbox">
+                                </th>
                                 <th>Product</th>
                                 <th>Quantity</th>
                                 <th>Price (each)</th>
@@ -116,6 +117,27 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const selectAll = document.getElementById('select-all-checkbox');
+    const itemCheckboxes = document.querySelectorAll('input[name="selected_items[]"]');
+
+    if (selectAll) {
+        selectAll.addEventListener('change', function () {
+            itemCheckboxes.forEach(cb => cb.checked = selectAll.checked);
+            updateSelectedCountAndTotals();
+        });
+
+        // If any item is unchecked, uncheck the select-all box
+        itemCheckboxes.forEach(cb => {
+            cb.addEventListener('change', function () {
+                if (!cb.checked) {
+                    selectAll.checked = false;
+                } else if ([...itemCheckboxes].every(c => c.checked)) {
+                    selectAll.checked = true;
+                }
+            });
+        });
+    }
+
     function updateSelectedCountAndTotals() {
         const checkboxes = document.querySelectorAll('input[name="selected_items[]"]');
         let count = 0;
