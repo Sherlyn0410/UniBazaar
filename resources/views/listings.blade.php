@@ -54,17 +54,19 @@
                                    class="btn btn-sm btn-outline-info rounded-circle" title="View">
                                     <i class="bi bi-eye"></i>
                                 </a>
-                                <a href="{{ route('edit.product', ['product' => $product->id]) }}"
-                                   class="btn btn-sm btn-outline-primary rounded-circle" title="Edit">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <form action="{{ route('delete.product', ['product' => $product->id]) }}" method="POST" class="d-inline" onsubmit="return confirmDelete(event)">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Delete">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                @if($product->status !== 'out_of_stock')
+                                    <a href="{{ route('edit.product', ['product' => $product->id]) }}"
+                                       class="btn btn-sm btn-outline-primary rounded-circle" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form action="{{ route('delete.product', ['product' => $product->id]) }}" method="POST" class="d-inline" onsubmit="return confirmDelete(event)">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </td>
                     </tr>
@@ -77,31 +79,56 @@
                                     <h5 class="modal-title" id="buyersModalLabel{{ $product->id }}">Buyers of {{ $product->product_name }}</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body bg-light">
                                     @if($product->orders->isEmpty())
-                                        <p class="text-muted">No buyers yet.</p>
+                                        <div class="alert alert-info text-center mb-0">No buyers yet.</div>
                                     @else
-                                        <ul class="list-group">
+                                        <div class="row g-3">
                                             @foreach($product->orders as $order)
-                                                <li class="list-group-item d-flex align-items-center gap-3">
-                                                    <div>
-                                                        @if($order->buyer->profile_image)
-                                                            <img src="{{ asset('storage/profile_images/' . $order->buyer->profile_image) }}"
-                                                                 alt="{{ $order->buyer->name }}"
-                                                                 class="rounded-circle border"
-                                                                 style="width:40px; height:40px; object-fit:cover;">
-                                                        @else
-                                                            <i class="bi bi-person-circle fs-4 text-secondary"></i>
-                                                        @endif
+                                                <div class="col-12">
+                                                    <div class="card shadow-sm border-0 rounded-4">
+                                                        <div class="card-body">
+                                                            <div class="row align-items-center g-3">
+                                                                <div class="col-auto">
+                                                                    @php
+                                                                        $buyer = $order->buyer;
+                                                                        $profileImage = !empty($buyer->profile_image) && file_exists(public_path('assets/img/' . $buyer->profile_image))
+                                                                            ? asset('assets/img/' . $buyer->profile_image)
+                                                                            : null;
+                                                                    @endphp
+                                                                    @if($profileImage)
+                                                                        <img src="{{ $profileImage }}"
+                                                                             alt="{{ $buyer->name }}"
+                                                                             class="rounded-circle border shadow"
+                                                                             style="width:56px; height:56px; object-fit:cover;">
+                                                                    @else
+                                                                        <span class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center"
+                                                                              style="width:56px; height:56px; font-size:2rem;">
+                                                                            <i class="bi bi-person-fill"></i>
+                                                                        </span>
+                                                                    @endif
+                                                                </div>
+                                                                <div class="col">
+                                                                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                                                        <div>
+                                                                            <div class="fw-semibold fs-5">{{ $buyer->name }}</div>
+                                                                            <div class="text-muted small"><i class="bi bi-envelope me-1"></i>{{ $buyer->email }}</div>
+                                                                            @if(!empty($buyer->contact))
+                                                                                <div class="text-muted small"><i class="bi bi-telephone me-1"></i>{{ $buyer->contact }}</div>
+                                                                            @endif
+                                                                        </div>
+                                                                        <div class="mt-2 mt-md-0 text-md-end">
+                                                                            <span class="badge bg-info text-dark mb-1">Ordered: {{ $order->quantity }} unit{{ $order->quantity > 1 ? 's' : '' }}</span>
+                                                                            <div class="text-muted small">on {{ \Carbon\Carbon::parse($order->ordered_at)->format('d M Y, h:i A') }}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <div><strong>{{ $order->buyer->name }}</strong> ({{ $order->buyer->email }})</div>
-                                                        <div>Ordered: {{ $order->quantity }} units on {{ \Carbon\Carbon::parse($order->ordered_at)->format('d M Y, h:i A') }}</div>
-                                                        <div>Contact: {{$order->buyer->contact}}</div>
-                                                    </div>
-                                                </li>
+                                                </div>
                                             @endforeach
-                                        </ul>
+                                        </div>
                                     @endif
                                 </div>
                             </div>

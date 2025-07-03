@@ -20,11 +20,11 @@
                         <td class="text-center fw-semibold">{{ $student->id }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
-                                @if($student->profile_image)
-                                    <img src="{{ asset('storage/profile_images/' . $student->profile_image) }}"
-                                         alt="{{ $student->name }}"
-                                         class="rounded-circle border"
-                                         style="width:32px; height:32px; object-fit:cover;">
+                                @if(!empty($student->profile_image) && file_exists(public_path('assets/img/' . $student->profile_image)))
+                                    <img src="{{ asset('assets/img/' . $student->profile_image) }}"
+                                        alt="Profile"
+                                        class="rounded-circle border shadow"
+                                        style="width: 32px; height: 32px; object-fit: cover;">
                                 @else
                                     <span class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center"
                                           style="width:32px; height:32px;">
