@@ -3,6 +3,13 @@
 @section('content')
     <h3 class="mb-4 fw-semibold text-dark">Pending Product Listings</h3>
 
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     @if($pendingProducts->isEmpty())
         <div class="alert alert-info">No pending products at the moment.</div>
     @else
