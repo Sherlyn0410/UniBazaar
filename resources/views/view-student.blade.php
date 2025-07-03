@@ -3,6 +3,13 @@
 @section('content')
     <h3 class="mb-4 fw-semibold">List of Students</h3>
 
+    @if(session('status'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('status') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
             <thead class="table-secondary align-middle">

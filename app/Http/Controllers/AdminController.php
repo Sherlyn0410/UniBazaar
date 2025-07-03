@@ -63,10 +63,13 @@ class AdminController extends Controller
     // Send the email before deleting
     Mail::to($student->email)->send(new StudentBanned($student));
 
+    // Delete all products created by this student
+    Product::where('student_id', $student->id)->delete();
+
     // Delete the student
     $student->delete();
 
-    return redirect()->route('view.student')->with('status', 'Student deleted and email notification sent.');
+    return redirect()->route('view.student')->with('status', 'Student and all their products deleted. Email notification sent.');
 }
 
        public function viewProduct()
