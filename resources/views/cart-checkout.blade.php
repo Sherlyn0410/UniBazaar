@@ -113,6 +113,7 @@
          
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://js.stripe.com/v3/"></script>
     <script>
         const stripe = Stripe('{{ config('services.stripe.key') }}');
@@ -123,8 +124,19 @@
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            Swal.fire({
+                title: 'Processing Payment',
+                text: 'Please wait while we process your payment...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             stripe.createToken(card).then(result => {
                 if (result.error) {
+                    Swal.close();
                     document.getElementById('card-errors').textContent = result.error.message;
                 } else {
                     const hiddenInput = document.createElement('input');

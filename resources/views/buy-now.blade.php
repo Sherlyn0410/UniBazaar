@@ -16,59 +16,86 @@
             <input type="hidden" name="quantity" value="{{ request('quantity') ?? 1 }}">
             <input type="hidden" name="total" value="{{ $product->product_price * (request('quantity') ?? 1) }}">
 
-           <div class="card shadow-sm p-4 mb-4">
-    <h5 class="fw-bold mb-3">🧾 Order Summary</h5>
-
-    <div class="d-flex gap-3 align-items-start">
-        <img src="{{ asset('/assets/img/' . $product->product_image) }}"" width="100" class="rounded border" alt="Product Image">
-
-        <div class="flex-grow-1">
-            <h5 class="mb-1">{{ $product->product_name }}</h5>
-            <p class="mb-1 text-muted">Price per unit: RM {{ number_format($product->product_price, 2) }}</p>
-            <p class="mb-1 text-muted">Quantity: {{ request('quantity') ?? 1 }}</p>
-            <hr>
-            <p class="fw-bold fs-5 mb-0">
-                Total: RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}
-            </p>
-        </div>
-    </div>
-</div>
-
-
-            <div class="mt-5">
-                <h5 class="fw-bold mb-3">Billing Address</h5>
-                <div class="border p-3 bg-light rounded">
-                    <p class="mb-0">INTI International College Penang<br>1-Z, Lebuh Bukit Jambul,<br>Bukit Jambul, 11900 Bayan Lepas,<br>Pulau Pinang</p>
+            <!-- 🧾 Order Summary -->
+            <div class="card shadow-sm mb-4 p-4">
+                <h5 class="fw-semibold mb-3">🧾 Order Summary</h5>
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex align-items-center border rounded-3 p-3 bg-light">
+                        @if($product && $product->product_image)
+                            <img src="{{ asset('/assets/img/' . $product->product_image) }}"
+                                 alt="{{ $product->product_name }}"
+                                 class="rounded border me-3"
+                                 style="width:64px; height:64px; object-fit:cover;">
+                        @else
+                            <span class="text-muted me-3 d-flex align-items-center justify-content-center"
+                                  style="width:64px; height:64px; background:#f0f0f0; border-radius:8px;">
+                                <i class="bi bi-image fs-2"></i>
+                            </span>
+                        @endif
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold">{{ $product->product_name }}</div>
+                            <div class="text-muted small">{{ $product->category ?? '' }}</div>
+                            <div class="mt-1">
+                                <span class="ms-0">Price: <span class="fw-semibold">RM {{ number_format($product->product_price, 2) }}</span></span>
+                            </div>
+                        </div>
+                        <div class="text-end ms-3">
+                            <span class="badge bg-secondary mb-1">Qty: {{ request('quantity') ?? 1 }}</span>
+                            <div class="fw-bold text-danger text-nowrap">RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="mt-5">
-                <h5 class="fw-bold mb-3">Payment Method</h5>
+            <!-- 🏠 Billing Address -->
+            <div class="card shadow-sm mb-4 p-4">
+                <h5 class="fw-bold mb-3">🏠 Billing Address</h5>
+                <div class="border p-3 bg-light rounded">
+                    <p class="mb-0">
+                        INTI International College Penang<br>
+                        1-Z, Lebuh Bukit Jambul,<br>
+                        Bukit Jambul, 11900 Bayan Lepas,<br>
+                        Pulau Pinang
+                    </p>
+                </div>
+            </div>
+
+            <!-- 💳 Payment Method -->
+            <div class="card shadow-sm p-4">
+                <h5 class="fw-bold mb-3">💳 Payment Method</h5>
                 <div class="form-check">
                     <input class="form-check-input" type="radio" name="payment_method" id="pay_stripe" value="stripe" checked>
                     <label class="form-check-label" for="pay_stripe">Pay with Card (Stripe)</label>
                 </div>
-
                 <div id="stripe-section" class="mt-3">
-                    <label for="card-element">Card Info</label>
+                    <label for="card-element" class="form-label">Card Info</label>
                     <div id="card-element" class="form-control"></div>
                     <div id="card-errors" class="text-danger mt-2" role="alert"></div>
                 </div>
+                <p class="mt-4 text-muted small">
+                    By proceeding, you agree to our <a href="{{ route('privacy.policy') }}">Privacy Policy</a>.
+                </p>
             </div>
 
-            <p class="mt-4 text-muted small">
-                By proceeding, you agree to our <a href="{{ route('privacy.policy') }}" target="_blank">Privacy Policy</a>.
-            </p>
+            <div style="height: 80px;"></div>
+            {{-- Spacer to prevent content from being hidden behind sticky bar --}}
 
-            <div class="text-end mt-4">
-                <button type="submit" class="btn btn-danger px-4">
-                    Pay RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}
+            <!-- Sticky Bottom Bar -->
+            <div class="bg-white border-top shadow-lg py-3 px-4 d-flex align-items-center justify-content-end fixed-bottom" style="z-index:1050;">
+                <div class="text-end me-4">
+                    <h6 class="mb-1">Subtotal: <span class="fw-bold">RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}</span></h6>
+                    <h5 class="text-danger fw-bold mb-0">Total: RM {{ number_format($product->product_price * (request('quantity') ?? 1), 2) }}</h5>
+                    <input type="hidden" name="total" value="{{ $product->product_price * (request('quantity') ?? 1) }}">
+                </div>
+                <button type="submit" form="payment-form" class="btn btn-danger btn-lg">
+                    Pay Now
                 </button>
             </div>
         </form>
     </div>
 
     <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const stripe = Stripe('{{ config('services.stripe.key') }}');
         const elements = stripe.elements();
@@ -78,8 +105,19 @@
         const form = document.getElementById('payment-form');
         form.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            Swal.fire({
+                title: 'Processing Payment',
+                text: 'Please wait while we process your payment...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             stripe.createToken(card).then(result => {
                 if (result.error) {
+                    Swal.close();
                     document.getElementById('card-errors').textContent = result.error.message;
                 } else {
                     const hiddenInput = document.createElement('input');
