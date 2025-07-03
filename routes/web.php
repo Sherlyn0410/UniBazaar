@@ -94,6 +94,7 @@ Route::post('product-upload', [SellerController::class, 'storeProducts'])->name(
         Route::post('/{product}/approve', [AdminController::class, 'approve'])->name('admin.products.approve');
         Route::post('/{product}/reject', [AdminController::class, 'reject'])->name('admin.products.reject');
         Route::get('/admin-report', [AdminController::class, 'viewReports'])->name('admin.reports');
+        Route::delete('/product/{product}', [AdminController::class, 'deleteProduct'])->name('admin.products.delete');
 
 
 });

@@ -6,46 +6,82 @@
     @if($pendingProducts->isEmpty())
         <div class="alert alert-info">No pending products at the moment.</div>
     @else
-        <table class="table table-striped table-bordered align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Product Name</th>
-                    <th>Seller Name</th>
-                    <th>Category</th>
-                    <th>Product Price</th>
-                    <th>Quantity</th>
-                    <th>Product Details</th>
-                    <th>Approve</th>
-                    <th>Reject</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($pendingProducts as $product)
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
+                <thead class="table-secondary align-middle">
                     <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->product_name }}</td>
-                        <td>{{ $product->student->name ?? 'Unknown' }}</td>
-                        <td>{{ ucfirst(str_replace('-', ' ', $product->category)) }}</td>
-                        <td>RM {{ number_format($product->product_price, 2) }}</td>
-                        <td>{{ $product->quantity }}</td>
-                        <td>{{ $product->product_details }}</td>
-                        <td>
-                            <form method="POST" action="{{ route('admin.products.approve', $product) }}">
-                                @csrf
-                                <button class="btn btn-success btn-sm">Approve</button>
-                            </form>
-                        </td>
-                        <td>
-                            <form method="POST" action="{{ route('admin.products.reject', $product) }}">
-                                @csrf
-                                <button class="btn btn-danger btn-sm">Reject</button>
-                            </form>
-                        </td>
+                        <th class="text-center">#</th>
+                        <th>Product</th>
+                        <th>Seller Name</th>
+                        <th>Category</th>
+                        <th>Product Price</th>
+                        <th>Quantity</th>
+                        <th>Product Details</th>
+                        <th class="text-center">Approve</th>
+                        <th class="text-center">Reject</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="align-top">
+                    @foreach ($pendingProducts as $index => $product)
+                        <tr>
+                            <td class="text-center fw-semibold">{{ $index + 1 }}</td>
+                            <td>
+                                <div class="d-flex align-items-start gap-2">
+                                    @if(!empty($product->product_image) && file_exists(public_path('assets/img/' . $product->product_image)))
+                                        <img src="{{ asset('assets/img/' . $product->product_image) }}"
+                                             alt="{{ $product->product_name }}"
+                                             class="rounded shadow-sm"
+                                             style="width: 40px; height: 40px; object-fit: cover;">
+                                    @else
+                                        <span class="bg-secondary text-white rounded d-flex justify-content-center align-items-center"
+                                              style="width:40px; height:40px;">
+                                            <i class="bi bi-image"></i>
+                                        </span>
+                                    @endif
+                                    <span class="fw-semibold">{{ $product->product_name }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    @if(!empty($product->student->profile_image) && file_exists(public_path('assets/img/' . $product->student->profile_image)))
+                                        <img src="{{ asset('assets/img/' . $product->student->profile_image) }}"
+                                             alt="{{ $product->student->name ?? 'Seller' }}"
+                                             class="rounded-circle shadow-sm"
+                                             style="width: 32px; height: 32px; object-fit: cover;">
+                                    @else
+                                        <span class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center"
+                                              style="width:32px; height:32px;">
+                                            <i class="bi bi-person"></i>
+                                        </span>
+                                    @endif
+                                    <span>{{ $product->student->name ?? 'Unknown' }}</span>
+                                </div>
+                            </td>
+                            <td>{{ ucfirst(str_replace('-', ' ', $product->category)) }}</td>
+                            <td>RM {{ number_format($product->product_price, 2) }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td class="text-muted">{{ $product->product_details }}</td>
+                            <td class="text-center">
+                                <form method="POST" action="{{ route('admin.products.approve', $product) }}">
+                                    @csrf
+                                    <button class="btn btn-success btn-sm rounded-circle" title="Approve">
+                                        <i class="bi bi-check-lg"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="text-center">
+                                <form method="POST" action="{{ route('admin.products.reject', $product) }}">
+                                    @csrf
+                                    <button class="btn btn-danger btn-sm rounded-circle" title="Reject">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 
     <hr class="my-5">
@@ -55,42 +91,84 @@
     @if($approvedProducts->isEmpty())
         <div class="alert alert-info">No approved products available.</div>
     @else
-        <table class="table table-striped table-bordered align-middle">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Product Name</th>
-                    <th>Seller Name</th>
-                        <th>Category</th>
-                    <th>Product Price</th>
-                    <th>Quantity</th>
-                    <th>Product Details</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($approvedProducts as $product)
+        <div class="table-responsive">
+            <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
+                <thead class="table-secondary align-middle">
                     <tr>
-                        <td>{{ $product->id }}</td>
-                        <td>{{ $product->product_name }}</td>
-                        <td>{{ $product->student->name ?? 'No Seller' }}</td>
-                        <td>{{ ucfirst(str_replace('-', ' ', $product->category)) }}</td>
-                        <td>RM {{ number_format($product->product_price, 2) }}</td>
-                        <td>{{ $product->quantity }}</td>
-                        <td>{{ $product->product_details }}</td>
-                        <td>
-                            <span class="badge
-                                @if($product->status == 'pending') bg-warning
-                                @elseif($product->status == 'live') bg-success
-                                @elseif($product->status == 'out_of_stock') bg-secondary
-                                @else bg-dark
-                                @endif">
-                                {{ ucfirst(str_replace('_', ' ', $product->status ?? 'unknown')) }}
-                            </span>
-                        </td>
+                        <th class="text-center">#</th>
+                        <th>Product</th>
+                        <th>Seller Name</th>
+                        <th>Category</th>
+                        <th>Product Price</th>
+                        <th>Quantity</th>
+                        <th>Product Details</th>
+                        <th>Status</th>
+                        <th class="text-center">Delete</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody class="align-top">
+                    @foreach ($approvedProducts as $index => $product)
+                        <tr>
+                            <td class="text-center fw-semibold">{{ $index + 1 }}</td>
+                            <td>
+                                <div class="d-flex align-items-start gap-2">
+                                    @if(!empty($product->product_image) && file_exists(public_path('assets/img/' . $product->product_image)))
+                                        <img src="{{ asset('assets/img/' . $product->product_image) }}"
+                                             alt="{{ $product->product_name }}"
+                                             class="rounded shadow-sm"
+                                             style="width: 40px; height: 40px; object-fit: cover;">
+                                    @else
+                                        <span class="bg-secondary text-white rounded d-flex justify-content-center align-items-center"
+                                              style="width:40px; height:40px;">
+                                            <i class="bi bi-image"></i>
+                                        </span>
+                                    @endif
+                                    <span class="fw-semibold">{{ $product->product_name }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    @if(!empty($product->student->profile_image) && file_exists(public_path('assets/img/' . $product->student->profile_image)))
+                                        <img src="{{ asset('assets/img/' . $product->student->profile_image) }}"
+                                             alt="{{ $product->student->name ?? 'Seller' }}"
+                                             class="rounded-circle shadow-sm"
+                                             style="width: 32px; height: 32px; object-fit: cover;">
+                                    @else
+                                        <span class="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center"
+                                              style="width:32px; height:32px;">
+                                            <i class="bi bi-person"></i>
+                                        </span>
+                                    @endif
+                                    <span>{{ $product->student->name ?? 'Unknown' }}</span>
+                                </div>
+                            </td>
+                            <td>{{ ucfirst(str_replace('-', ' ', $product->category)) }}</td>
+                            <td>RM {{ number_format($product->product_price, 2) }}</td>
+                            <td>{{ $product->quantity }}</td>
+                            <td class="text-muted">{{ $product->product_details }}</td>
+                            <td>
+                                <span class="badge
+                                    @if($product->status == 'pending') bg-warning
+                                    @elseif($product->status == 'live') bg-success
+                                    @elseif($product->status == 'out_of_stock') bg-secondary
+                                    @else bg-dark
+                                    @endif">
+                                    {{ ucfirst(str_replace('_', ' ', $product->status ?? 'unknown')) }}
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <form method="POST" action="{{ route('admin.products.delete', $product) }}" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm rounded-circle" title="Delete">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 @endsection

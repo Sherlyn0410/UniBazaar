@@ -135,6 +135,14 @@ public function viewReports()
     $reports = Report::with(['buyer', 'seller', 'order.product'])->latest()->get();
     return view('admin-report', compact('reports'));
 }
+
+public function deleteProduct(Product $product)
+{
+    $product->delete();
+
+    return back()->with('success', 'Product deleted successfully.');
+}
+
     }
 
 

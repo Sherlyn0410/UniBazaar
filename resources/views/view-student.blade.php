@@ -7,7 +7,7 @@
         <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
             <thead class="table-secondary align-middle">
                 <tr>
-                    <th class="text-center">ID</th>
+                    <th class="text-center">#</th>
                     <th>Student Name</th>
                     <th>Email</th>
                     <th>Contact</th>
@@ -15,9 +15,9 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse ($students as $student)  
+                @forelse ($students as $index => $student)  
                     <tr>
-                        <td class="text-center fw-semibold">{{ $student->id }}</td>
+                        <td class="text-center fw-semibold">{{ $index + 1 }}</td>
                         <td>
                             <div class="d-flex align-items-center gap-2">
                                 @if(!empty($student->profile_image) && file_exists(public_path('assets/img/' . $student->profile_image)))
