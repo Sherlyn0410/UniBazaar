@@ -10,6 +10,13 @@
         </div>
     @endif
 
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="table-responsive">
         <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
             <thead class="table-secondary align-middle">
@@ -48,10 +55,10 @@
                                 <a href="{{ route('admin.edit.student', $student->id) }}" class="btn btn-sm btn-outline-primary rounded-circle" title="Edit">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <form method="POST" action="{{ route('admin.student.delete', $student->id) }}" class="d-inline">
+                                <form method="POST" action="{{ route('admin.student.delete', $student->id) }}" class="delete-student-form d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Delete" onclick="return confirm('Are you sure you want to delete this student?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger rounded-circle" title="Delete">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -66,4 +73,36 @@
             </tbody>
         </table>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Delete student with confirm and processing alert
+        document.querySelectorAll('.delete-student-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will delete the student and all their products.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing',
+                            text: 'Deleting student...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

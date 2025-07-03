@@ -74,7 +74,7 @@
                             <td class="text-muted">{{ $report->reason }}</td>
                             <td>{{ $report->created_at->format('d M Y, h:i A') }}</td>
                             <td class="text-center">
-                                <form action="{{ route('admin.student.delete', $report->seller->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to ban this seller?');">
+                                <form action="{{ route('admin.student.delete', $report->seller->id) }}" method="POST" class="ban-seller-form">
                                     @csrf
                                     @method('DELETE')
                                     <button class="btn btn-sm btn-danger">Ban Seller</button>
@@ -86,4 +86,36 @@
             </table>
         </div>
     @endif
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Ban seller with confirm and processing alert
+        document.querySelectorAll('.ban-seller-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will ban the seller and delete all their products.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, ban seller!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing',
+                            text: 'Banning seller...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

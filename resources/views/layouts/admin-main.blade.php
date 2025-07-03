@@ -13,7 +13,7 @@
 <body class="font-sans antialiased bg-light">
     <main class="d-flex flex-nowrap min-vh-100">
         <!-- Sidebar -->
-        <div class="flex-shrink-0 p-3 bg-white border-end d-flex flex-column" style="width: 280px; min-height: 100vh;">
+        <div class="p-3 bg-white border-end d-flex flex-column" style="width: 280px; min-height: 100vh;">
             <div>
                 <a href="/admin" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
                     <img src="{{ asset('assets/img/inti-logo.png') }}" alt="Logo" class="d-inline-block align-text-top" style="height: 70px;">

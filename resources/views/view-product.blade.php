@@ -6,8 +6,8 @@
     @if($pendingProducts->isEmpty())
         <div class="alert alert-info">No pending products at the moment.</div>
     @else
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
+        <div class="table-responsive" style="max-height: 300px; overflow: auto;">
+            <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff; min-width: 900px;">
                 <thead class="table-secondary align-middle">
                     <tr>
                         <th class="text-center">#</th>
@@ -62,17 +62,17 @@
                             <td>{{ $product->quantity }}</td>
                             <td class="text-muted">{{ $product->product_details }}</td>
                             <td class="text-center">
-                                <form method="POST" action="{{ route('admin.products.approve', $product) }}">
+                                <form method="POST" action="{{ route('admin.products.approve', $product) }}" class="approve-form d-inline">
                                     @csrf
-                                    <button class="btn btn-success btn-sm rounded-circle" title="Approve">
+                                    <button type="submit" class="btn btn-success btn-sm rounded-circle" title="Approve">
                                         <i class="bi bi-check-lg"></i>
                                     </button>
                                 </form>
                             </td>
                             <td class="text-center">
-                                <form method="POST" action="{{ route('admin.products.reject', $product) }}">
+                                <form method="POST" action="{{ route('admin.products.reject', $product) }}" class="reject-form d-inline">
                                     @csrf
-                                    <button class="btn btn-danger btn-sm rounded-circle" title="Reject">
+                                    <button type="submit" class="btn btn-danger btn-sm rounded-circle" title="Reject">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </form>
@@ -84,15 +84,15 @@
         </div>
     @endif
 
-    <hr class="my-5">
+    <hr class="my-4">
 
     <h3 class="mb-4 fw-semibold">Approved Product Listings</h3>
 
     @if($approvedProducts->isEmpty())
         <div class="alert alert-info">No approved products available.</div>
     @else
-        <div class="table-responsive">
-            <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff;">
+        <div class="table-responsive" style="max-height: 300px; overflow: auto;">
+            <table class="table table-striped table-hover table-bordered align-middle shadow-sm rounded-4 overflow-hidden mx-auto" style="background: #fff; min-width: 900px;">
                 <thead class="table-secondary align-middle">
                     <tr>
                         <th class="text-center">#</th>
@@ -171,4 +171,52 @@
             </table>
         </div>
     @endif
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Approve button with processing alert
+        document.querySelectorAll('.approve-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Processing',
+                    text: 'Approving product...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                form.submit();
+            });
+        });
+
+        // Reject button with confirm and processing alert
+        document.querySelectorAll('.reject-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'This will reject the product listing. Are you sure?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, reject it!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: 'Processing',
+                            text: 'Rejecting product...',
+                            allowOutsideClick: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection
