@@ -112,4 +112,14 @@
             }
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if(session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Unauthorized',
+            text: '{{ session('error') }}'
+        });
+    </script>
+    @endif
 </x-app-layout>
