@@ -19,7 +19,7 @@
 
         <div class="mb-3">
             <label>Contact</label>
-            <input type="text" name="contact" value="{{ old('contact', $student->contact) }}" class="form-control">
+            <input type="text" name="contact" value="{{ old('contact', $student->contact) }}" class="form-control" required>
         </div>
 
     
