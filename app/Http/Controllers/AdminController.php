@@ -95,7 +95,7 @@ class AdminController extends Controller
 }
 
 
-       public function viewOrder(){
+    public function viewOrder(){
         $orders = Order::with(['buyer', 'product'])->latest()->get();
         return view('view-order', compact('orders'));
     }
